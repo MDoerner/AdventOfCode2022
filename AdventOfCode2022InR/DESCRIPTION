@@ -1,0 +1,23 @@
+Package: AdventOfCode2022InR
+Title: Max Doerner's solutions to AdventOfCode 2022 in R
+Version: 0.0.0.9000
+Authors@R: 
+    person("Max", "Doerner", , "maxdoerner@gmx.net", role = c("aut", "cre"))
+Description: This package contains Max Doener's personal inputs and solutions to the 49 coding challenges of AdventOfCode 2022.  
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.2
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Depends: 
+    R (>= 2.10)
+LazyData: true
+Imports: 
+    cli,
+    glue,
+    magrittr,
+    purrr,
+    readr,
+    stringr
