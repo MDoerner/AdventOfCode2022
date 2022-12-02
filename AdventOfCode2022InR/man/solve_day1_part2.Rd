@@ -10,7 +10,7 @@ solve_day1_part2(backpacks)
 \item{backpacks}{A list of one integer vector per backpack containing the individual calories per item}
 }
 \value{
-The largest total calories in a backpack
+The sum of the three largest totals of calories in a backpacks
 }
 \description{
 Solution to Day1 Part2 of Advent of Code 2022

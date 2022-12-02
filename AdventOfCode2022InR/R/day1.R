@@ -41,7 +41,7 @@ solve_day1_part1 <- function(backpacks) {
 #'
 #' @param backpacks A list of one integer vector per backpack containing the individual calories per item
 #'
-#' @return The largest total calories in a backpack
+#' @return The sum of the three largest totals of calories in a backpacks
 #' @importFrom magrittr %>%
 solve_day1_part2 <- function(backpacks) {
   sorted_backpack_calories <- backpacks %>%

@@ -16,8 +16,11 @@ Depends:
 LazyData: true
 Imports: 
     cli,
+    dplyr,
+    forcats,
     glue,
     magrittr,
     purrr,
     readr,
-    stringr
+    stringr,
+    tibble
