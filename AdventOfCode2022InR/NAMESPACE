@@ -3,3 +3,4 @@
 export(parse_day_input)
 export(solve_day)
 importFrom(magrittr,"%>%")
+importFrom(rlang,.data)

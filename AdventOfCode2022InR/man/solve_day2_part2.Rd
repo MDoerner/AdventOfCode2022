@@ -9,6 +9,9 @@ solve_day2_part2(strategy_guide)
 \arguments{
 \item{strategy_guide}{A tibble with columns \code{OpponentPlay} and \code{ResponseCode}}
 }
+\value{
+The final player score if the guide is followed based on the part 2 assumptions
+}
 \description{
 Solution to Day2 Part2 of Advent of Code 2022
 }

@@ -38,12 +38,13 @@ opponent_play_from_code <- function(code) {
 
 
 
-#' Parsed Input to Day1 of Advent Of Code 2022
+#' Parsed Input to Day2 of Advent Of Code 2022
 #'
 #' @param input_string Input string to day 2 of AdventOfCode
 #'
 #' @return A tibble with columns `OpponentPlay` and `ResponseCode`
 #' @importFrom magrittr %>%
+#' @importFrom rlang .data
 parse_day2_input <- function(input_string) {
   column_spec <- readr::cols(
     X1 = readr::col_character(),
@@ -56,12 +57,12 @@ parse_day2_input <- function(input_string) {
     col_types = column_spec
   ) %>%
     dplyr::mutate(
-      OpponentPlay = opponent_play_from_code(X1),
-      ResponseCode = X2
+      OpponentPlay = opponent_play_from_code(.data$X1),
+      ResponseCode = .data$X2
     ) %>%
     dplyr::select(
-      OpponentPlay,
-      ResponseCode
+      "OpponentPlay",
+      "ResponseCode"
     )
 }
 
@@ -109,7 +110,7 @@ game_outcome <- function(player_play, opponent_play) {
       game_outcomes,
       by = c("PlayerPlay", "OpponentPlay")
     ) %>%
-    dplyr::pull(Outcome)
+    dplyr::pull("Outcome")
 
   outcome_from_text(outcome_text)
 }
@@ -205,7 +206,7 @@ player_play_with_outcome <- function(outcome, opponent_play){
       game_outcomes,
       by = c("Outcome", "OpponentPlay")
     ) %>%
-    dplyr::pull(PlayerPlay)
+    dplyr::pull("PlayerPlay")
   
   play_from_text(play_text)
 }
@@ -222,7 +223,7 @@ part2_player_play_from_response_code <- function(response_code, opponent_play) {
 #'
 #' @param strategy_guide A tibble with columns `OpponentPlay` and `ResponseCode`
 #'
-#' @return 
+#' @return The final player score if the guide is followed based on the part 2 assumptions 
 #' @importFrom magrittr %>%
 solve_day2_part2 <- function(strategy_guide) {
   opponent_plays <- strategy_guide$OpponentPlay

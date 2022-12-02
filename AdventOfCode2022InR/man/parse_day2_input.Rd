@@ -2,7 +2,7 @@
 % Please edit documentation in R/day2.R
 \name{parse_day2_input}
 \alias{parse_day2_input}
-\title{Parsed Input to Day1 of Advent Of Code 2022}
+\title{Parsed Input to Day2 of Advent Of Code 2022}
 \usage{
 parse_day2_input(input_string)
 }
@@ -13,5 +13,5 @@ parse_day2_input(input_string)
 A tibble with columns \code{OpponentPlay} and \code{ResponseCode}
 }
 \description{
-Parsed Input to Day1 of Advent Of Code 2022
+Parsed Input to Day2 of Advent Of Code 2022
 }

@@ -17,10 +17,10 @@ LazyData: true
 Imports: 
     cli,
     dplyr,
-    forcats,
     glue,
     magrittr,
     purrr,
     readr,
+    rlang,
     stringr,
     tibble

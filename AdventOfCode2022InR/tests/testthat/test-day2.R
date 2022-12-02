@@ -36,3 +36,21 @@ test_that("solve_day2_part2 works: provided test input", {
 
 
 
+
+test_that("solve_day2_part1 works: real input", {
+  input <- parse_day2_input(day2_input)
+  actual <- solve_day2_part1(input)
+  expected <- "12855"
+  expect_equal(actual, expected)
+})
+
+
+test_that("solve_day2_part2 works: real input", {
+  input <- parse_day2_input(day2_input)
+  actual <- solve_day2_part2(input)
+  expected <- "13726"
+  expect_equal(actual, expected)
+})
+
+
+
