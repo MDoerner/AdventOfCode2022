@@ -79,12 +79,14 @@ validate_input_string <- function(input_string) {
 #' @inheritParams solve_day
 #'
 #' @return Name of the input parse function for the specified `day`
+#' @noRd
 input_parse_function_name <- function(day) {
   glue::glue("parse_day{day}_input")
 }
 
 
 #' @inherit parse_day_input
+#' @noRd
 parse_day_input_wo_validation <- function(input_string, day) {
   do.call(input_parse_function_name(day), list(input_string))
 }
@@ -115,12 +117,14 @@ parse_day_input <- function(input_string, day, part = 1) {
 #' @inheritParams solve_day
 #'
 #' @return Name of the function solving the specified problem in AdventOfCode
+#' @noRd
 solve_day_function_name <- function(day, part) {
   glue::glue("solve_day{day}_part{part}")
 }
 
 
 #' @inherit solve_day
+#' @noRd
 solve_day_wo_validation <- function(input_string, day, part) {
   structured_input <- parse_day_input_wo_validation(input_string, day)
   do.call(solve_day_function_name(day, part), list(structured_input))

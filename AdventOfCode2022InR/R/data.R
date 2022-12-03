@@ -19,3 +19,13 @@
 #' 
 #' @source <https://adventofcode.com/2022/day/2>
 "day2_input"
+
+
+#' Input for Day3 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day3_input`
+#' A single string containing one the contents of one rucksack at a time
+#' Each letter represents an item type. The first half of the items is in the left and the other half in the right compartment.
+#' 
+#' @source <https://adventofcode.com/2022/day/3>
+"day3_input"

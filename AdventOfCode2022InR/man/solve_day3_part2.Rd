@@ -4,10 +4,10 @@
 \alias{solve_day3_part2}
 \title{Solution to Day3 Part2 of Advent of Code 2022}
 \usage{
-solve_day3_part2(input)
+solve_day3_part2(rucksacks)
 }
 \arguments{
-\item{input}{TO DO}
+\item{rucksacks}{TO DO}
 }
 \value{
 TO DO

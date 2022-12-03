@@ -4,13 +4,13 @@
 \alias{solve_day3_part1}
 \title{Solution to Day3 Part1 of Advent of Code 2022}
 \usage{
-solve_day3_part1(input)
+solve_day3_part1(rucksacks)
 }
 \arguments{
-\item{input}{TO DO}
+\item{rucksacks}{A list with one item per rucksack. Each rucksack is represented by a list of two character vectors containing the stored items, one per compartment.}
 }
 \value{
-TO DO
+The total priority of the unique item types in each rucksack appearing in both compartments
 }
 \description{
 Solution to Day3 Part1 of Advent of Code 2022

@@ -10,7 +10,7 @@ parse_day3_input(input_string)
 \item{input_string}{Input string to day 3 of AdventOfCode}
 }
 \value{
-TO DO
+A list with one item per rucksack. Each rucksack is represented by a list of two character vectors containing the stored items, one per compartment.
 }
 \description{
 Parsed Input to Day3 of Advent Of Code 2022
