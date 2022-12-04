@@ -24,8 +24,18 @@
 #' Input for Day3 of Advent of Code 2022 for Max Doerner
 #'
 #' @format ## `day3_input`
-#' A single string containing one the contents of one rucksack at a time
+#' A single string containing the contents of one rucksack at a time
 #' Each letter represents an item type. The first half of the items is in the left and the other half in the right compartment.
 #' 
 #' @source <https://adventofcode.com/2022/day/3>
 "day3_input"
+
+
+#' Input for Day4 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day4_input`
+#' A single string containing one pair of section ranges per line.
+#' Section ranges are presented as a pair of integers separated by a hyphen.
+#' 
+#' @source <https://adventofcode.com/2022/day/4>
+"day4_input"

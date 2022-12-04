@@ -7,7 +7,7 @@
 \format{
 \subsection{\code{day3_input}}{
 
-A single string containing one the contents of one rucksack at a time
+A single string containing the contents of one rucksack at a time
 Each letter represents an item type. The first half of the items is in the left and the other half in the right compartment.
 }
 }
