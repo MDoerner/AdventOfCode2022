@@ -10,7 +10,7 @@ parse_day5_input(input_string)
 \item{input_string}{Input string to day 5 of AdventOfCode}
 }
 \value{
-TO DO
+A list containing an initial stack configuration and a list of moves.
 }
 \description{
 Parsed Input to Day5 of Advent Of Code 2022

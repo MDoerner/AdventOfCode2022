@@ -7,10 +7,10 @@
 solve_day5_part1(input)
 }
 \arguments{
-\item{input}{TO DO}
+\item{input}{A list containing an initial stack configuration and a list of moves.}
 }
 \value{
-TO DO
+Top items after all moves are performed by the CrateMover 9000.
 }
 \description{
 Solution to Day5 Part1 of Advent of Code 2022
