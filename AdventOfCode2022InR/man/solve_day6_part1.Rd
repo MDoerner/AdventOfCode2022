@@ -4,13 +4,13 @@
 \alias{solve_day6_part1}
 \title{Solution to Day6 Part1 of Advent of Code 2022}
 \usage{
-solve_day6_part1(input)
+solve_day6_part1(signal)
 }
 \arguments{
-\item{input}{TO DO}
+\item{signal}{A vector of single characters representing the signal}
 }
 \value{
-TO DO
+Position of the last input in the first run of 4 distinct items
 }
 \description{
 Solution to Day6 Part1 of Advent of Code 2022

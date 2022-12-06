@@ -43,10 +43,19 @@
 
 #' Input for Day5 of Advent of Code 2022 for Max Doerner
 #'
-#' @format ## `day4_input`
+#' @format ## `day5_input`
 #' A single string containing two parts separated by an empty line.
 #' The first section is a depiction of the initial stack configuration.
 #' The second section is a list of moves to perform, one per line.
 #' 
 #' @source <https://adventofcode.com/2022/day/5>
 "day5_input"
+
+
+#' Input for Day6 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day6_input`
+#' A single string of seemingly random characters representing a communication signal.
+#' 
+#' @source <https://adventofcode.com/2022/day/6>
+"day6_input"

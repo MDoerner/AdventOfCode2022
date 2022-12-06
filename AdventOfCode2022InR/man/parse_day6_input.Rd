@@ -10,7 +10,7 @@ parse_day6_input(input_string)
 \item{input_string}{Input string to day 6 of AdventOfCode}
 }
 \value{
-TO DO
+A vector of single characters representing the signal
 }
 \description{
 Parsed Input to Day6 of Advent Of Code 2022

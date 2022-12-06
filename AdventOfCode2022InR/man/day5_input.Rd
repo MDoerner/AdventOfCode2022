@@ -5,7 +5,7 @@
 \alias{day5_input}
 \title{Input for Day5 of Advent of Code 2022 for Max Doerner}
 \format{
-\subsection{\code{day4_input}}{
+\subsection{\code{day5_input}}{
 
 A single string containing two parts separated by an empty line.
 The first section is a depiction of the initial stack configuration.
