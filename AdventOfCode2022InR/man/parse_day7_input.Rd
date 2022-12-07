@@ -10,7 +10,7 @@ parse_day7_input(input_string)
 \item{input_string}{Input string to day 7 of AdventOfCode}
 }
 \value{
-TO DO
+List of command line file system commands with output
 }
 \description{
 Parsed Input to Day7 of Advent Of Code 2022

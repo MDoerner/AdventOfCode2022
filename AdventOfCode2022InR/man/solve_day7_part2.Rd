@@ -4,13 +4,13 @@
 \alias{solve_day7_part2}
 \title{Solution to Day7 Part2 of Advent of Code 2022}
 \usage{
-solve_day7_part2(input)
+solve_day7_part2(commands)
 }
 \arguments{
-\item{input}{TO DO}
+\item{commands}{List of command line file system commands with output}
 }
 \value{
-TO DO
+Smallest directory size larger than the missing space to upgrade
 }
 \description{
 Solution to Day7 Part2 of Advent of Code 2022

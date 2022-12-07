@@ -4,13 +4,13 @@
 \alias{solve_day7_part1}
 \title{Solution to Day7 Part1 of Advent of Code 2022}
 \usage{
-solve_day7_part1(input)
+solve_day7_part1(commands)
 }
 \arguments{
-\item{input}{TO DO}
+\item{commands}{List of command line file system commands with output}
 }
 \value{
-TO DO
+Sum of sizes of all directories with size <= 100000
 }
 \description{
 Solution to Day7 Part1 of Advent of Code 2022
