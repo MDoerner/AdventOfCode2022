@@ -150,6 +150,7 @@ tree_map_with_view_distances_and_score <- function(tree_map_with_visi){
 }
 
 
+# TODO: Optimize this; it takes way too long on the actual input
 
 #' Solution to Day8 Part2 of Advent of Code 2022
 #'

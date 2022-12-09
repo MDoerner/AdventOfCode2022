@@ -10,7 +10,7 @@ parse_day9_input(input_string)
 \item{input_string}{Input string to day 9 of AdventOfCode}
 }
 \value{
-TO DO
+A list of moves, each being a list with elements 'direction' out of ('U', 'D', 'L', 'R') and 'distance', an integer
 }
 \description{
 Parsed Input to Day9 of Advent Of Code 2022

@@ -79,3 +79,12 @@
 #' 
 #' @source <https://adventofcode.com/2022/day/8>
 "day8_input"
+
+
+#' Input for Day9 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day9_input`
+#' A single string containing one move of the form 'direction distance' per line, where U, D, L, R encode the directions
+#' 
+#' @source <https://adventofcode.com/2022/day/9>
+"day9_input"
