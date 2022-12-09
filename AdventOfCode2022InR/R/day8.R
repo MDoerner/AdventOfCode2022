@@ -51,6 +51,17 @@ tree_map_with_visibility <- function(tree_map) {
         .data$VisibleFromBelow | 
         .data$VisibleFromLeft | 
         .data$VisibleFromRight
+    ) %>%
+    dplyr::select(c(
+      "X", 
+      "Y", 
+      "Height", 
+      "VisibleFromAbove", 
+      "VisibleFromBelow", 
+      "VisibleFromLeft", 
+      "VisibleFromRight", 
+      "Visible"
+      )
     )
 }
 
@@ -119,13 +130,10 @@ right_view_distance <- function(x, y, height, visible_from_right, tree_map){
   }
 }
 
-
-tree_map_with_view_distances_and_score <- function(tree_map_with_visi){
-  top_view <- purrr::partial(top_view_distance, tree_map = tree_map_with_visi)
-  down_view <- purrr::partial(down_view_distance, tree_map = tree_map_with_visi)
-  left_view <- purrr::partial(left_view_distance, tree_map = tree_map_with_visi)
-  right_view <- purrr::partial(right_view_distance, tree_map = tree_map_with_visi)
-  tree_map_with_visi %>%
+up_and_down_distances_for_column <- function(column_map) {
+  top_view <- purrr::partial(top_view_distance, tree_map = column_map)
+  down_view <- purrr::partial(down_view_distance, tree_map = column_map)
+  column_map %>%
     dplyr::mutate(
       TopViewDistance = purrr::pmap_dbl(
         .l = list(.data$X, .data$Y, .data$Height, .data$VisibleFromAbove),
@@ -134,7 +142,24 @@ tree_map_with_view_distances_and_score <- function(tree_map_with_visi){
       DownViewDistance = purrr::pmap_dbl(
         .l = list(.data$X, .data$Y, .data$Height, .data$VisibleFromBelow),
         .f = down_view
-      ),
+      )
+    )
+}
+
+add_up_and_down_distances <- function(tree_map_with_visi) {
+  column_maps <- tree_map_with_visi %>%
+    dplyr::group_by(.data$X) %>%
+    dplyr::group_split()
+  column_maps %>%
+    purrr::map(up_and_down_distances_for_column) %>%
+    dplyr::bind_rows()
+}
+
+left_and_right_distances_for_row <- function(row_map) {
+  left_view <- purrr::partial(left_view_distance, tree_map = row_map)
+  right_view <- purrr::partial(right_view_distance, tree_map = row_map)
+  row_map %>%
+    dplyr::mutate(
       LeftViewDistance = purrr::pmap_dbl(
         .l = list(.data$X, .data$Y, .data$Height, .data$VisibleFromLeft),
         .f = left_view
@@ -143,10 +168,56 @@ tree_map_with_view_distances_and_score <- function(tree_map_with_visi){
         .l = list(.data$X, .data$Y, .data$Height, .data$VisibleFromRight),
         .f = right_view
       )
-    ) %>%
-    dplyr::mutate(
-      ScenicScore = .data$TopViewDistance * .data$DownViewDistance * .data$LeftViewDistance * .data$RightViewDistance
     )
+}
+
+add_left_and_right_distances <- function(tree_map_with_visi) {
+  row_maps <- tree_map_with_visi %>%
+    dplyr::group_by(.data$Y) %>%
+    dplyr::group_split()
+  row_maps %>%
+    purrr::map(left_and_right_distances_for_row) %>%
+    dplyr::bind_rows()
+}
+
+
+
+tree_map_with_view_distances_and_score <- function(tree_map_with_visi){
+  tree_map_with_visi %>%
+    add_up_and_down_distances %>%
+    add_left_and_right_distances %>%
+    dplyr::mutate(
+          ScenicScore = .data$TopViewDistance * .data$DownViewDistance * .data$LeftViewDistance * .data$RightViewDistance
+        )
+    
+  
+  
+  # top_view <- purrr::partial(top_view_distance, tree_map = tree_map_with_visi)
+  # down_view <- purrr::partial(down_view_distance, tree_map = tree_map_with_visi)
+  # left_view <- purrr::partial(left_view_distance, tree_map = tree_map_with_visi)
+  # right_view <- purrr::partial(right_view_distance, tree_map = tree_map_with_visi)
+  # tree_map_with_visi %>%
+  #   dplyr::mutate(
+  #     TopViewDistance = purrr::pmap_dbl(
+  #       .l = list(.data$X, .data$Y, .data$Height, .data$VisibleFromAbove),
+  #       .f = top_view
+  #     ),
+  #     DownViewDistance = purrr::pmap_dbl(
+  #       .l = list(.data$X, .data$Y, .data$Height, .data$VisibleFromBelow),
+  #       .f = down_view
+  #     ),
+  #     LeftViewDistance = purrr::pmap_dbl(
+  #       .l = list(.data$X, .data$Y, .data$Height, .data$VisibleFromLeft),
+  #       .f = left_view
+  #     ),
+  #     RightViewDistance = purrr::pmap_dbl(
+  #       .l = list(.data$X, .data$Y, .data$Height, .data$VisibleFromRight),
+  #       .f = right_view
+  #     )
+  #   ) %>%
+  #   dplyr::mutate(
+  #     ScenicScore = .data$TopViewDistance * .data$DownViewDistance * .data$LeftViewDistance * .data$RightViewDistance
+  #   )
 }
 
 
@@ -161,8 +232,8 @@ tree_map_with_view_distances_and_score <- function(tree_map_with_visi){
 #' @importFrom rlang .data
 solve_day8_part2 <- function(tree_map) {
   tree_map %>%
-    tree_map_with_visibility %>%
-    tree_map_with_view_distances_and_score %>%
+    tree_map_with_visibility() %>%
+    tree_map_with_view_distances_and_score() %>%
     dplyr::pull(.data$ScenicScore) %>%
     max() %>%
     as.character()
