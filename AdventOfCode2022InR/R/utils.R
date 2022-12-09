@@ -27,3 +27,41 @@ split_lines <- function(text, remove_empty = TRUE){
     lines
   }
 }
+
+#' Split Characters
+#'
+#' @param text A character vector of length 1
+#'
+#' @return A character vector containing each individual character
+split_characters <- function(text){
+  stringr::str_split(text, pattern = "") %>%
+    unlist()
+} 
+
+
+#' Split Lines
+#'
+#' @param text A character vector of length 1 whose lines have the same length
+#'
+#' @return A tibble with one row per character, excluding newlines, with an `Value` column containing the character, an `X` column containing the character position in the row and a `Y` column containing the line number of the character
+#' @importFrom magrittr %>%
+#' @importFrom rlang .data
+to_character_grid <- function(text){
+  line_characters <- text %>% 
+    split_lines() %>%
+    purrr::map(split_characters)
+  y_coordinates <- seq_along(line_characters)
+  names(line_characters) <- paste0("Y", y_coordinates)
+  tibble::as_tibble(line_characters) %>%
+    dplyr::mutate(
+      X = seq_along(.data$Y1)
+    ) %>% tidyr::pivot_longer(
+      cols = dplyr::starts_with("Y"),
+      names_prefix = "Y",
+      names_to = "Y",
+      values_to = "Value"
+    ) %>% 
+    dplyr::mutate(
+      Y = readr::parse_integer(.data$Y)
+    )
+}

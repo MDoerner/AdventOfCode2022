@@ -23,4 +23,5 @@ Imports:
     readr,
     rlang,
     stringr,
-    tibble
+    tibble,
+    tidyr

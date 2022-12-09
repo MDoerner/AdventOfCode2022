@@ -70,3 +70,12 @@
 #' 
 #' @source <https://adventofcode.com/2022/day/7>
 "day7_input"
+
+
+#' Input for Day8 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day8_input`
+#' A single string containing a square grid of tree heights.
+#' 
+#' @source <https://adventofcode.com/2022/day/8>
+"day8_input"

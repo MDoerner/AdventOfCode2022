@@ -4,13 +4,13 @@
 \alias{solve_day8_part2}
 \title{Solution to Day8 Part2 of Advent of Code 2022}
 \usage{
-solve_day8_part2(input)
+solve_day8_part2(tree_map)
 }
 \arguments{
-\item{input}{TO DO}
+\item{tree_map}{A tibble representing a map of tree heights, each row representing a tree}
 }
 \value{
-TO DO
+The number of visible trees on the map
 }
 \description{
 Solution to Day8 Part2 of Advent of Code 2022

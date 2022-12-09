@@ -10,7 +10,7 @@ parse_day8_input(input_string)
 \item{input_string}{Input string to day 8 of AdventOfCode}
 }
 \value{
-TO DO
+A tibble representing a map of tree heights, each row representing a tree
 }
 \description{
 Parsed Input to Day8 of Advent Of Code 2022
