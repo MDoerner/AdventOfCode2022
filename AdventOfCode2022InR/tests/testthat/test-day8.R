@@ -68,13 +68,13 @@ test_that("solve_day8_part1 works: real input", {
 })
 
 
-# TAKES TOO LONG
-# test_that("solve_day8_part2 works: real input", {
-#   input <- parse_day8_input(day8_input)
-#   actual <- solve_day8_part2(input)
-#   expected <- "327180"
-#   expect_equal(actual, expected)
-# })
+
+test_that("solve_day8_part2 works: real input", {
+  input <- parse_day8_input(day8_input)
+  actual <- solve_day8_part2(input)
+  expected <- "327180"
+  expect_equal(actual, expected)
+})
 
 
 
