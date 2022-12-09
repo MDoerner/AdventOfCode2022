@@ -126,8 +126,16 @@ solve_day_function_name <- function(day, part) {
 #' @inherit solve_day
 #' @noRd
 solve_day_wo_validation <- function(input_string, day, part) {
+  start_time <- Sys.time()
   structured_input <- parse_day_input_wo_validation(input_string, day)
-  do.call(solve_day_function_name(day, part), list(structured_input))
+  parse_end_time <- Sys.time()
+  result <- do.call(solve_day_function_name(day, part), list(structured_input))
+  end_time <- Sys.time()
+  list(
+    solution = result,
+    time_parsing = parse_end_time - start_time,
+    time_execution = end_time - parse_end_time
+  )
 }
 
 
@@ -138,7 +146,7 @@ solve_day_wo_validation <- function(input_string, day, part) {
 #' @param day An integer between 1 and 25 specifying the day of AdventOfCode
 #' @param part The integer 1 or 2 specifying the part of the `day` of AdventOfCode
 #'
-#' @return A string containing the solution
+#' @return A list with an elements 'solution', a string containing the solution, 'time_parsing', the time it took to parse the input, and 'time_execution', the time it took to compute the solution  
 #' @export
 #'
 #' @examples

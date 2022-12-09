@@ -14,7 +14,7 @@ solve_day(input_string, day, part)
 \item{part}{The integer 1 or 2 specifying the part of the \code{day} of AdventOfCode}
 }
 \value{
-A string containing the solution
+A list with an elements 'solution', a string containing the solution, 'time_parsing', the time it took to parse the input, and 'time_execution', the time it took to compute the solution
 }
 \description{
 Solve a Challenge from Advent of Code 2022
