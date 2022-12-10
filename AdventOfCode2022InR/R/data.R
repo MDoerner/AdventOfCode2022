@@ -88,3 +88,12 @@
 #' 
 #' @source <https://adventofcode.com/2022/day/9>
 "day9_input"
+
+
+#' Input for Day10 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day10_input`
+#' A single string containing one CPU instruction per line
+#' 
+#' @source <https://adventofcode.com/2022/day/10>
+"day10_input"

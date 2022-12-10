@@ -4,13 +4,13 @@
 \alias{solve_day10_part1}
 \title{Solution to Day10 Part1 of Advent of Code 2022}
 \usage{
-solve_day10_part1(input)
+solve_day10_part1(code)
 }
 \arguments{
-\item{input}{TO DO}
+\item{code}{A list of commands, each a list with arguments \code{type}, the command type, \code{argument}, the argument to the command, and \code{cyles}, the time it takes to execute the command}
 }
 \value{
-TO DO
+The sum of the signal strength at each 20th cycle
 }
 \description{
 Solution to Day10 Part1 of Advent of Code 2022
