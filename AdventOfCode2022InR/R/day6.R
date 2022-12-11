@@ -25,7 +25,7 @@ day6 <- modules::module(
           ),
           "read_queue" = purrr::reduce(
             .x = initial_items,
-            .f = queue$enque,
+            .f = queue$enqueue,
             .init = queue$empty_queue()
           ),
           "head_position" = length(initial_items)
@@ -34,14 +34,14 @@ day6 <- modules::module(
       
       modules::export("feed")
       feed <- function(signal_reader, item) {
-        item_dropping_out <- queue$peek_queue(signal_reader$read_queue)
+        item_dropping_out <- queue$peek(signal_reader$read_queue)
         list(
           "count_store" = signal_reader$count_store %>%
             count_store$remove(item_dropping_out) %>%
             count_store$add(item),
           "read_queue" = signal_reader$read_queue %>%
             queue$dequeue() %>%
-            queue$enque(item),
+            queue$enqueue(item),
           "head_position" = signal_reader$head_position + 1
         )
       }

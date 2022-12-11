@@ -1,5 +1,5 @@
 
-## A simple implementation of a queue
+## A simple implementation of a queue for atomic types
 
 
 modules::export("empty_queue")
@@ -20,13 +20,13 @@ is_empty <- function(queue) {
 }
 
 
-modules::export("enque")
-enque <- function(queue, item) {
+modules::export("enqueue")
+enqueue <- function(queue, item) {
   c(queue, item)
 }
 
-modules::export("peek_queue")
-peek_queue <- function(queue) {
+modules::export("peek")
+peek <- function(queue) {
   queue[[1]]
 }
 
@@ -40,5 +40,8 @@ dequeue <- function(queue) {
   )
 }
 
-
+modules::export("as_vector")
+as_vector <- function(queue) {
+  queue
+}
 

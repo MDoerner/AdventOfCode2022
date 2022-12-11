@@ -14,7 +14,7 @@
 #' A single string containing one Rock Paper Scissors Strategy Guide item per line
 #' \describe{
 #'   \item{OpponentPlay}{Opponent play encoded as 'A' = 'Rock', 'B' = 'Paper' and 'C' = 'Scissors}
-#'   \item{ResposnseCode}{Reponse code with values 'X', 'Y' and 'Z'; function not specified}
+#'   \item{ResponseCode}{Reponse code with values 'X', 'Y' and 'Z'; function not specified}
 #' }
 #' 
 #' @source <https://adventofcode.com/2022/day/2>
@@ -97,3 +97,17 @@
 #' 
 #' @source <https://adventofcode.com/2022/day/10>
 "day10_input"
+
+
+#' Input for Day11 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day11_input`
+#' A single string containing monkey descriptions separated by empty lines
+#' \describe{
+#'   \item{Starting items}{A list of integers indicating your initial worry for each items the monkey holds}
+#'   \item{Operation}{A formula describing how your worry about an item changes when the monkey inspects it}
+#'   \item{Test}{An if-else expression describing to which monkey the item will be passed based on your worry about the item}
+#' }
+#' 
+#' @source <https://adventofcode.com/2022/day/11>
+"day11_input"

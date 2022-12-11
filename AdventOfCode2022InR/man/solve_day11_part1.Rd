@@ -4,13 +4,13 @@
 \alias{solve_day11_part1}
 \title{Solution to Day11 Part1 of Advent of Code 2022}
 \usage{
-solve_day11_part1(input)
+solve_day11_part1(monkeys)
 }
 \arguments{
-\item{input}{TO DO}
+\item{monkeys}{A list of monkeys}
 }
 \value{
-TO DO
+The product of the number of items thrown by the two monkeys throwing the most in the first 20 rounds
 }
 \description{
 Solution to Day11 Part1 of Advent of Code 2022

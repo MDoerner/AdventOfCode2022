@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{to_character_grid}
 \alias{to_character_grid}
-\title{Split Lines}
+\title{To Character Grid}
 \usage{
 to_character_grid(text)
 }
@@ -13,5 +13,5 @@ to_character_grid(text)
 A tibble with one row per character, excluding newlines, with an \code{Value} column containing the character, an \code{X} column containing the character position in the row and a \code{Y} column containing the line number of the character
 }
 \description{
-Split Lines
+To Character Grid
 }
