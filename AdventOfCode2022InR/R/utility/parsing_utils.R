@@ -1,5 +1,9 @@
 
 
+modules::import(magrittr, "%>%")
+
+
+
 #' Split Blocks of Lines
 #'
 #' @param text A character vector of length 1  
@@ -68,3 +72,40 @@ to_character_grid <- function(text){
     )
 }
 modules::export("to_character_grid")
+
+
+hashmap <- modules::use("R/data_structures/hashmap.R")
+point_encoder <- modules::use("R/utility/point_utils.R")
+
+modules::export("to_hashmap")
+#' To Map
+#'
+#' @param text A character vector of length 1 whose lines have the same length
+#' @param converter A function converting single letters to values. If NULL, the identity is assumed.
+#'
+#' @return A hash map containing a one value per non-newline character, the key being an encoding of the coordinates given by column and row
+#' @importFrom magrittr %>%
+to_hashmap <- function(text, converter = NULL){
+  convert <- if (is.null(converter)) { 
+    function(x) x 
+  } else { 
+    converter 
+  }
+  
+  map <- hashmap$empty_hashmap()
+  
+  line_characters <- text %>% 
+    split_lines() %>%
+    purrr::map(split_characters)
+  
+  for (y  in  seq_along(line_characters)) {
+    line <- line_characters[[y]]
+    for (x in seq_along(line)) {
+      value <- convert(line[[x]])
+      key <- point_encoder$encode_point(c(x, y))
+      hashmap$set(map, key, value)
+    }
+  }
+  
+  map
+}

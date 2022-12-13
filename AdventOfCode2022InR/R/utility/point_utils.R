@@ -1,5 +1,9 @@
 
 
+modules::import(magrittr, "%>%")
+
+
+
 #' Encode Point
 #'
 #' @param point A numeric vector
