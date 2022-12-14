@@ -1,45 +1,7 @@
 
 ## Implementation of the Disjkstra algorithm
 
-
-# TODO: Replace by own implementation.
-heap <- modules::module({
-  
-  modules::export("empty_heap")
-  empty_heap <- function() {
-    datastructures::fibonacci_heap("integer")
-  }
-  
-  modules::export("get_min")
-  get_min <- function(heap) {
-    datastructures::peek(heap)[[1]]
-  }
-  
-  modules::export("is_empty")
-  is_empty <- function(heap) {
-    datastructures::size(heap) == 0
-  }
-  
-  modules::export("decrease_priority")
-  decrease_priority <- function(heap, key, old_priority, new_priority) {
-    handle <- datastructures::handle(heap, old_priority, key)
-    datastructures::decrease_key(heap, old_priority, new_priority, handle[[1]]$handle)
-    heap
-  }
-  
-  modules::export("insert")
-  insert <- function(heap, key, priority) {
-    datastructures::insert(heap, priority, key)
-    heap
-  }
-  
-  modules::export("remove_min")
-  remove_min <- function(heap) {
-    datastructures::pop(heap)
-    heap
-  }
-})
-
+heap <- modules::use("R/data_structures/heap.R")
 hashmap <- modules::use("R/data_structures/hashmap.R")
 point_encoder <- modules::use("R/utility/point_utils.R")
 
@@ -56,7 +18,7 @@ has_distance <- function(distances, point) {
 }
 
 decrease_distance <- function(search_heap, point, old_distance, new_distance) {
-  heap$decrease_priority(search_heap, point_encoder$encode_point(point), old_distance, new_distance)
+  heap$decrease_priority(search_heap, point_encoder$encode_point(point), new_distance)
 }
 
 insert <- function(search_heap, point, distance) {
@@ -90,13 +52,13 @@ shortest_path_distance_until <- function(start, end_condition, connections_of) {
     for (connection in connections) {
       distance_to_start <- current_distance_to_start + connection$distance
       if (!has_distance(distances, connection$destination)) {
-        set_distance(distances, connection$destination, distance_to_start)
-        insert(search_heap, connection$destination, distance_to_start)
+        distances <- set_distance(distances, connection$destination, distance_to_start)
+        search_heap <- insert(search_heap, connection$destination, distance_to_start)
       } else {
         current_destination_distance <- get_distance(distances, connection$destination)
         if (current_destination_distance > distance_to_start) {
-          set_distance(distances, connection$destination, distance_to_start)
-          decrease_distance(
+          distances <- set_distance(distances, connection$destination, distance_to_start)
+          search_heap <- decrease_distance(
             search_heap = search_heap, 
             point = connection$destination, 
             old_distance = current_destination_distance, 
@@ -106,7 +68,7 @@ shortest_path_distance_until <- function(start, end_condition, connections_of) {
       }
     }
     current_location <- get_closest_location(search_heap)
-    remove_closest_location(search_heap)
+    search_heap <- remove_closest_location(search_heap)
   }
   get_distance(distances, current_location)
 }

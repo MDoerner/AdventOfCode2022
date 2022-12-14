@@ -16,7 +16,6 @@ Depends:
 LazyData: true
 Imports: 
     cli,
-    datastructures,
     dplyr,
     glue,
     magrittr,

@@ -104,7 +104,7 @@ day12 <- modules::module(
 #'
 #' @param input_string Input string to day 12 of AdventOfCode
 #'
-#' @return TO DO
+#' @return A list containing the start point, the end point and a height map
 #' @importFrom magrittr %>%
 parse_day12_input <- function(input_string) {
   day12$parse_input(input_string)
@@ -112,9 +112,9 @@ parse_day12_input <- function(input_string) {
 
 #' Solution to Day12 Part1 of Advent of Code 2022
 #'
-#' @param input TO DO
+#' @param height_map A list containing the start point, the end point and a height map
 #'
-#' @return TO DO
+#' @return The minimal distance between the start point and end point
 #' @importFrom magrittr %>%
 solve_day12_part1 <- function(height_map) {
   day12$solve_part1(height_map)
@@ -122,9 +122,9 @@ solve_day12_part1 <- function(height_map) {
 
 #' Solution to Day12 Part2 of Advent of Code 2022
 #'
-#' @param input TO DO
+#' @param height_map A list containing the start point, the end point and a height map
 #'
-#' @return TO DO
+#' @return The minimal distance between the end point and a loaction with the lowest height level
 #' @importFrom magrittr %>%
 solve_day12_part2 <- function(height_map) {
   day12$solve_part2(height_map)

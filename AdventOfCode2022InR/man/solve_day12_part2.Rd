@@ -4,13 +4,13 @@
 \alias{solve_day12_part2}
 \title{Solution to Day12 Part2 of Advent of Code 2022}
 \usage{
-solve_day12_part2(input)
+solve_day12_part2(height_map)
 }
 \arguments{
-\item{input}{TO DO}
+\item{height_map}{A list containing the start point, the end point and a height map}
 }
 \value{
-TO DO
+The minimal distance between the end point and a loaction with the lowest height level
 }
 \description{
 Solution to Day12 Part2 of Advent of Code 2022

@@ -1,9 +1,7 @@
 
-
+hashmap <- modules::use("../../R/data_structures/hashmap.R")
 
 test_that("parse_day12_input works: simplified test input", {
-  hashmap <- modules::use("../../R/data_structures/hashmap.R")
-  
   input <- "Sab
 abc
 fEz"
