@@ -10,7 +10,7 @@ parse_day13_input(input_string)
 \item{input_string}{Input string to day 13 of AdventOfCode}
 }
 \value{
-TO DO
+A list of pairs of packets
 }
 \description{
 Parsed Input to Day13 of Advent Of Code 2022

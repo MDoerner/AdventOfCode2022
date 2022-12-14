@@ -111,3 +111,21 @@
 #' 
 #' @source <https://adventofcode.com/2022/day/11>
 "day11_input"
+
+
+#' Input for Day12 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day12_input`
+#' A single string containing a topographic map. Each character represents a height level from 'a' = 0 to 'z' = 25. Moreover, the start point is 'S' at level 0 and the end point is 'E' at level 25. The distance between adjacent characters is 1.
+#' 
+#' @source <https://adventofcode.com/2022/day/12>
+"day12_input"
+
+
+#' Input for Day13 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day13_input`
+#' A single string containing pairs of packets separated by an empty line. Each non-empty line is a packet, which is a comma-separated list of other packets and integers enclosed in square brackets
+#' 
+#' @source <https://adventofcode.com/2022/day/13>
+"day13_input"

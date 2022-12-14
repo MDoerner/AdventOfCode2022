@@ -4,13 +4,13 @@
 \alias{solve_day13_part2}
 \title{Solution to Day13 Part2 of Advent of Code 2022}
 \usage{
-solve_day13_part2(input)
+solve_day13_part2(pairs)
 }
 \arguments{
-\item{input}{TO DO}
+\item{pairs}{A list of pairs of packets}
 }
 \value{
-TO DO
+The product of the indices of the divider packets after merging and sorting all pairs
 }
 \description{
 Solution to Day13 Part2 of Advent of Code 2022
