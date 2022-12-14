@@ -4,13 +4,13 @@
 \alias{solve_day14_part2}
 \title{Solution to Day14 Part2 of Advent of Code 2022}
 \usage{
-solve_day14_part2(input)
+solve_day14_part2(sand_cave)
 }
 \arguments{
-\item{input}{TO DO}
+\item{sand_cave}{A cave data structure containing the rock formations}
 }
 \value{
-TO DO
+The number of sand packets coming to rest before one seals the drop spot
 }
 \description{
 Solution to Day14 Part2 of Advent of Code 2022

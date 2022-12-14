@@ -7,10 +7,10 @@
 parse_day14_input(input_string)
 }
 \arguments{
-\item{input_string}{Input string to day 14 of AdventOfCode}
+\item{input_string}{Input string to day 13 of AdventOfCode}
 }
 \value{
-TO DO
+A cave data structure containing the rock formations
 }
 \description{
 Parsed Input to Day14 of Advent Of Code 2022

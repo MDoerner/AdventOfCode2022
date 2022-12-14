@@ -129,3 +129,12 @@
 #' 
 #' @source <https://adventofcode.com/2022/day/13>
 "day13_input"
+
+
+#' Input for Day14 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day14_input`
+#' A single string containing one description for a rock formation per line. Each description is a sequence of corners of the rock formation.
+#' 
+#' @source <https://adventofcode.com/2022/day/14>
+"day14_input"

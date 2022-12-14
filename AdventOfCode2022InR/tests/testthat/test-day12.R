@@ -1,12 +1,11 @@
 
-hashmap <- modules::use("../../R/data_structures/hashmap.R")
 
 test_that("parse_day12_input works: simplified test input", {
   input <- "Sab
 abc
 fEz"
   actual <- parse_day12_input(input)
-  actual_map <- hashmap$as_list(actual$height_map)
+  actual_map <- for_tests$hashmap$as_list(actual$height_map)
   expected_map <- list(
     "1__1" = 0L,
     "1__2" = 0L,
