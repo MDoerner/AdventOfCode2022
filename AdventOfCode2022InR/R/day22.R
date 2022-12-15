@@ -1,4 +1,26 @@
 
+#' Module containing the implementation for Day22 of Advent Of Code 2022
+#' @noRd
+day22 <- modules::module(
+  {
+    modules::export("parse_input")
+    parse_input <- function(input_string) {
+      stop("To Be Implemented")
+    }
+    
+    
+    modules::export("solve_part1")
+    solve_part1 <- function(input) {
+      stop("To Be Implemented")
+    }
+    
+    
+    modules::export("solve_part2")
+    solve_part2 <- function(input) {
+      stop("To Be Implemented")
+    }
+  }
+)
 
 
 #' Parsed Input to Day22 of Advent Of Code 2022
@@ -8,11 +30,8 @@
 #' @return TO DO
 #' @importFrom magrittr %>%
 parse_day22_input <- function(input_string) {
-  stop("To Be Implemented")
+  day22$parse_input(input_string)
 }
-
-
-
 
 #' Solution to Day22 Part1 of Advent of Code 2022
 #'
@@ -21,9 +40,8 @@ parse_day22_input <- function(input_string) {
 #' @return TO DO
 #' @importFrom magrittr %>%
 solve_day22_part1 <- function(input) {
-  stop("To Be Implemented")
+  day22$solve_part1(input)
 }
-
 
 #' Solution to Day22 Part2 of Advent of Code 2022
 #'
@@ -32,5 +50,5 @@ solve_day22_part1 <- function(input) {
 #' @return TO DO
 #' @importFrom magrittr %>%
 solve_day22_part2 <- function(input) {
-  stop("To Be Implemented")
+  day22$solve_part2(input)
 }
