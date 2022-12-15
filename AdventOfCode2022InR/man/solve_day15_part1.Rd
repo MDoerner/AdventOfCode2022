@@ -7,10 +7,10 @@
 solve_day15_part1(input)
 }
 \arguments{
-\item{input}{TO DO}
+\item{input}{A list with a test row, a coordinate limit and a list of sensors, each with its position and the one of the closest beacon}
 }
 \value{
-TO DO
+Points on the test row that cannot contain a beacon
 }
 \description{
 Solution to Day15 Part1 of Advent of Code 2022

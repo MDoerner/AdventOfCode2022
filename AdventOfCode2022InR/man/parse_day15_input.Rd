@@ -10,7 +10,7 @@ parse_day15_input(input_string)
 \item{input_string}{Input string to day 15 of AdventOfCode}
 }
 \value{
-TO DO
+A list with a test row, a coordinate limit and a list of sensors, each with its position and the one of the closest beacon
 }
 \description{
 Parsed Input to Day15 of Advent Of Code 2022

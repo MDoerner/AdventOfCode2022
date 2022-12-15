@@ -138,3 +138,12 @@
 #' 
 #' @source <https://adventofcode.com/2022/day/14>
 "day14_input"
+
+
+#' Input for Day15 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day15_input`
+#' A single string containing one sensor position together with the closest beacon position per line.
+#' 
+#' @source <https://adventofcode.com/2022/day/15>
+"day15_input"
