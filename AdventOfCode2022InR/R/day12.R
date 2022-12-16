@@ -41,7 +41,8 @@ day12 <- modules::module(
     
     connections_of_fct <- function(height_map, heights_compatible) {
       map <- height_map$height_map
-      function(point) {
+      function(encoded_point) {
+        point <- point_encoder$decode_point(encoded_point)
         candidates <- list(
           c(-1, 0) + point,
           c(0, 1) + point,
@@ -65,7 +66,7 @@ day12 <- modules::module(
         purrr::map(
           candidates,
           function(p) list(
-            destination = p,
+            destination = point_encoder$encode_point(p),
             distance = 1L
           )
         )
@@ -79,7 +80,7 @@ day12 <- modules::module(
         current_height + 1 >= other_height
       }
       connections_of <- connections_of_fct(height_map, heights_compatible)
-      min_distance <- dijkstra$shortest_path_distance(height_map$start, height_map$end, connections_of)
+      min_distance <- dijkstra$shortest_path_distance(point_encoder$encode_point(height_map$start), point_encoder$encode_point(height_map$end), connections_of)
       as.character(min_distance)
     }
     
@@ -93,7 +94,7 @@ day12 <- modules::module(
       end_condition <- function(current_location) {
         hashmap$get(height_map$height_map, point_encoder$encode_point(current_location)) == 0L
       }
-      min_distance <- dijkstra$shortest_path_distance_until(height_map$end, end_condition, connections_of)
+      min_distance <- dijkstra$shortest_path_distance_until(point_encoder$encode_point(height_map$end), end_condition, connections_of)
       as.character(min_distance)
     }
   }

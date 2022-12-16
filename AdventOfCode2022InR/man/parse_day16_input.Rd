@@ -10,7 +10,7 @@ parse_day16_input(input_string)
 \item{input_string}{Input string to day 16 of AdventOfCode}
 }
 \value{
-TO DO
+A list of valves, each with its name, rate and connections to other valves
 }
 \description{
 Parsed Input to Day16 of Advent Of Code 2022

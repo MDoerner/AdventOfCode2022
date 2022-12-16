@@ -4,6 +4,9 @@
 day16 <- modules::module(
   {
     parsing <- modules::use("R/utility/parsing_utils.R")
+    dijkstra <- modules::use("R/algorithms/dijkstra.R")
+    hashmap <- modules::use("R/data_structures/hashmap.R")
+    point_encoder <- modules::use("R/utility/point_utils.R")
     
     parse_valve <- function(text) {
       matches <- stringr::str_match(text, pattern = "^Valve (.+) has flow rate=(\\d+); tunnels? leads? to valves? (.+)")
@@ -31,99 +34,61 @@ day16 <- modules::module(
       valves
     }
     
-    encode_state <- function(state) {
-      encoded_valves <- paste0(state$open_valves, collapse = "_")
-      paste(state$position, encoded_valves, sep = "__")
-    }
-    
-    already_visited <- function(state, visited_states) {
-      encode_state(state) %in% visited_states
-    }
-    
-    available_next_actions <- function(state, valves, visited_states) {
-      current_valve <- valves[[state$position]]
-      move_states <- current_valve$connections %>%
+    available_next_actions <- function(state, valves, distances) {
+      current_distances <- distances[[state$position]]
+      relevant_valves <- names(current_distances) %>%
+        setdiff(state$open_valves)
+      relevant_valves %>%
         purrr::map(
-          function(position) {
+          function(valve) {
             list(
-              position = position,
-              open_valves = state$open_valves
+              state = list(
+                position = valve,
+                open_valves = union(state$open_valves, valve)
+              ),
+              distance = current_distances[[valve]],
+              rate_increase = valves[[valve]]$rate
             )
           }
         )
-      
-      state_already_visited <- purrr::map_lgl(
-        .x = move_states,
-        .f = purrr::partial(
-          already_visited,
-          visited_states = visited_states
-        )
-      )
-      
-      relevant_state_changes <- move_states[!state_already_visited] %>% 
-        purrr::map(
-          function(state) {
-            list(
-              state = state,
-              rate_increase = 0
-            )
-          }
-        )
-      
-      if (current_valve$rate > 0 && !(current_valve$name %in% state$open_valves)) {
-        open_valve_state <- list(
-          position = state$position,
-          open_valves = c(state$open_valves, state$position) %>%
-            unique() %>%
-            sort()
-        )
-        open_valve <- list(
-          state = open_valve_state,
-          rate_increase = current_valve$rate
-        )
-        relevant_state_changes <- list(
-          list(open_valve),
-          relevant_state_changes
-        ) %>% unlist(recursive = FALSE)
-      }
-      relevant_state_changes
     }
     
     max_pressure_release_from_state <- function(
-      state, 
-      valves, 
-      remaining_time, 
-      visited_states, 
-      released_pressure, 
-      max_known_released_pressure, 
-      remaining_rate
+      state,
+      valves,
+      remaining_time,
+      released_pressure,
+      max_known_released_pressure,
+      remaining_rate,
+      distances
     ) {
       if (remaining_time <= 0) {
         return(max_known_released_pressure)
       }
       available_pressure <- remaining_time * remaining_rate
       if (available_pressure <= max_known_released_pressure - released_pressure) {
-        # There is no more chance release more pressure then the current best.
+        # There is no more chance to release more pressure then the current best.
         return(max_known_released_pressure)
       }
-      visited_states <- c(visited_states, encode_state(state)) 
-      new_remaining_time = remaining_time - 1L
-      
-      available_next_moves <- available_next_actions(state, valves, visited_states)
+
+      available_next_moves <- available_next_actions(state, valves, distances)
       for (action in available_next_moves) {
-        new_released_pressure <- released_pressure + action$rate_increase * new_remaining_time
-        if (new_released_pressure > max_known_released_pressure) {
-          max_known_released_pressure <- new_released_pressure
+        new_remaining_time <- remaining_time - action$distance - 1L
+        if (new_remaining_time > 0) {
+          new_released_pressure <- released_pressure + action$rate_increase * new_remaining_time
+          if (new_released_pressure > max_known_released_pressure) {
+            max_known_released_pressure <- new_released_pressure
+          }
+          max_known_released_pressure <- max_pressure_release_from_state(
+            state = action$state,
+            valves = valves,
+            remaining_time = new_remaining_time,
+            released_pressure = new_released_pressure,
+            max_known_released_pressure = max_known_released_pressure,
+            remaining_rate = remaining_rate - action$rate_increase,
+            distances = distances
+          )
         }
-        max_known_released_pressure <- max_pressure_release_from_state(
-          state = action$state, 
-          valves = valves, 
-          remaining_time = new_remaining_time, 
-          visited_states = visited_states, 
-          released_pressure = new_released_pressure, 
-          max_known_released_pressure = max_known_released_pressure,
-          remaining_rate = remaining_rate - action$rate_increase 
-        )
       }
       max_known_released_pressure
     }
@@ -133,19 +98,69 @@ day16 <- modules::module(
         position = start_point,
         open_valves = c()
       )
-      visited_states <- c()
       total_rate <- valves %>%
         purrr::map_int(function(valve) valve$rate) %>%
         sum()
+      distances <- distances_between_relevant_valves(valves, start_point)
       max_pressure_release_from_state(
         state = start_state,
-        valves = valves, 
-        remaining_time = time_available, 
-        visited_states = visited_states, 
-        released_pressure = 0, 
+        valves = valves,
+        remaining_time = time_available,
+        released_pressure = 0,
         max_known_released_pressure = 0,
-        remaining_rate = total_rate
+        remaining_rate = total_rate,
+        distances = distances
       )
+    }
+    
+    distances_between_relevant_valves <- function(valves, start_valve) {
+      is_relevant <- valves %>%
+        purrr::map_lgl(
+          function(valve) {
+            valve$rate > 0 || valve$name == start_valve
+          }
+        )
+      relevant_valves <- valves[is_relevant]
+      
+      connections_of <- function(valve_name) {
+        valve <- valves[[valve_name]]
+        purrr::map(
+          .x = valve$connections,
+          .f = function(connection) {
+            list(
+              destination = connection,
+              distance = 1L
+            )
+          }
+        )
+      }
+      
+      find_distances <- purrr::partial(
+        dijkstra$shortest_path_distances,
+        connections_of = connections_of
+      )
+      
+      all_distances <- purrr::map(
+        .x = names(relevant_valves),
+        .f = find_distances
+      )
+      
+      relevant_distances <- all_distances %>%
+        purrr::map(
+          function(distances) {
+            is_relevant_distance <- distances %>%
+              names() %>%
+              purrr::map_lgl(
+                function(valve_name) {
+                  valves[[valve_name]]$rate > 0
+                }
+              )
+            distances[is_relevant_distance]
+          }
+        )
+      names(relevant_distances) <- names(relevant_valves)
+      
+      relevant_distances
     }
     
     modules::export("solve_part1")
@@ -161,9 +176,108 @@ day16 <- modules::module(
     }
     
     
+    
+    highest_releaseable_pressure_duo <- function(start_point, valves, time_available) {
+      start_state <- list(
+        positions = rep(start_point, times = 2L),
+        arrival_times = rep(time_available, times = 2L),
+        open_valves = c()
+      )
+      total_rate <- valves %>%
+        purrr::map_int(function(valve) valve$rate) %>%
+        sum()
+      distances <- distances_between_relevant_valves(valves, start_point)
+      max_pressure_release_from_state_duo(
+        state = start_state,
+        valves = valves,  
+        released_pressure = 0, 
+        max_known_released_pressure = 0,
+        remaining_rate = total_rate,
+        distances = distances
+      )
+    }
+    
+    max_pressure_release_from_state_duo <- function(
+      state,
+      valves,
+      released_pressure,
+      max_known_released_pressure,
+      remaining_rate,
+      distances
+    ) {
+      next_action_time_remaining <- max(state$arrival_times)
+      if (next_action_time_remaining <= 0) {
+        return(max_known_released_pressure)
+      }
+      available_pressure <- next_action_time_remaining * remaining_rate
+      if (available_pressure <= max_known_released_pressure - released_pressure) {
+        # There is no more chance to release more pressure then the current best.
+        return(max_known_released_pressure)
+      }
+      
+      action_index <- match(next_action_time_remaining, state$arrival_times)
+      action_valve_name <- state$positions[[action_index]]
+      action_valve <- valves[[action_valve_name]]
+      
+      # If we arrived at a closed valve, we open it. Otherwise, there was no need to go here.
+      if (!(action_valve_name %in% state$open_valves) && action_valve$rate > 0) {
+        new_released_pressure <- released_pressure + action_valve$rate * (next_action_time_remaining - 1L)
+        new_max_known_released_pressure <- max(max_known_released_pressure, new_released_pressure)
+        new_arrival_times <- state$arrival_times
+        new_arrival_times[[action_index]] <- next_action_time_remaining - 1L
+        new_state <- list(
+          positions = state$positions,
+          arrival_times = new_arrival_times,
+          open_valves = union(state$open_valves, action_valve_name)
+        )
+        new_max_known_released_pressure <- max_pressure_release_from_state_duo(
+          state = new_state,
+          valves = valves,
+          released_pressure = new_released_pressure,
+          max_known_released_pressure = new_max_known_released_pressure,
+          remaining_rate = remaining_rate - action_valve$rate,
+          distances = distances
+        )
+        return(new_max_known_released_pressure)
+      }
+      
+      old_style_state <- list(
+        position = action_valve_name,
+        open_valves = state$open_valves
+      )
+      available_next_moves <- available_next_actions(old_style_state, valves, distances)
+      for (action in available_next_moves) {
+        new_arrival_times <- state$arrival_times
+        new_arrival_times[[action_index]] <- next_action_time_remaining - action$distance
+        new_positions <- state$positions
+        new_positions[[action_index]] <- action$state$position
+        new_state <- list(
+          positions = new_positions,
+          arrival_times = new_arrival_times,
+          open_valves = state$open_valves
+        )
+        max_known_released_pressure <- max_pressure_release_from_state_duo(
+          state = new_state,
+          valves = valves,
+          released_pressure = released_pressure,
+          max_known_released_pressure = max_known_released_pressure,
+          remaining_rate = remaining_rate,
+          distances = distances
+        )
+      }
+      max_known_released_pressure
+    }
+    
     modules::export("solve_part2")
     solve_part2 <- function(valves) {
-      stop("To Be Implemented")
+      start_point <- "AA"
+      time_available <- 26L
+      max_pressure_release <- highest_releaseable_pressure_duo(
+        start_point,
+        valves,
+        time_available
+      )
+      as.character(max_pressure_release)
     }
   }
 )
@@ -173,7 +287,7 @@ day16 <- modules::module(
 #'
 #' @param input_string Input string to day 16 of AdventOfCode
 #'
-#' @return TO DO
+#' @return A list of valves, each with its name, rate and connections to other valves
 #' @importFrom magrittr %>%
 parse_day16_input <- function(input_string) {
   day16$parse_input(input_string)
@@ -181,9 +295,9 @@ parse_day16_input <- function(input_string) {
 
 #' Solution to Day16 Part1 of Advent of Code 2022
 #'
-#' @param input TO DO
+#' @param valves A list of valves, each with its name, rate and connections to other valves
 #'
-#' @return TO DO
+#' @return The must pressure you can release in 30 minutes
 #' @importFrom magrittr %>%
 solve_day16_part1 <- function(valves) {
   day16$solve_part1(valves)
@@ -191,9 +305,9 @@ solve_day16_part1 <- function(valves) {
 
 #' Solution to Day16 Part2 of Advent of Code 2022
 #'
-#' @param input TO DO
+#' @param valves A list of valves, each with its name, rate and connections to other valves
 #'
-#' @return TO DO
+#' @return The must pressure you can release in 26 minutes helped by an equally competent elephant
 #' @importFrom magrittr %>%
 solve_day16_part2 <- function(valves) {
   day16$solve_part2(valves)

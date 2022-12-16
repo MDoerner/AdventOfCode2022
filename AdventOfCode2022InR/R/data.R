@@ -147,3 +147,12 @@
 #' 
 #' @source <https://adventofcode.com/2022/day/15>
 "day15_input"
+
+
+#' Input for Day16 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day16_input`
+#' A single string containing one valve specification per line. Each shows the name, the possible release rate and the other valves the valve is connected to.
+#' 
+#' @source <https://adventofcode.com/2022/day/16>
+"day16_input"

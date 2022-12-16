@@ -4,13 +4,13 @@
 \alias{solve_day16_part1}
 \title{Solution to Day16 Part1 of Advent of Code 2022}
 \usage{
-solve_day16_part1(input)
+solve_day16_part1(valves)
 }
 \arguments{
-\item{input}{TO DO}
+\item{valves}{A list of valves, each with its name, rate and connections to other valves}
 }
 \value{
-TO DO
+The must pressure you can release in 30 minutes
 }
 \description{
 Solution to Day16 Part1 of Advent of Code 2022
