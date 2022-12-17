@@ -10,7 +10,7 @@ parse_day17_input(input_string)
 \item{input_string}{Input string to day 17 of AdventOfCode}
 }
 \value{
-TO DO
+A logical vector representing a jet pattern; TRUE means to the right and FALSE to the left
 }
 \description{
 Parsed Input to Day17 of Advent Of Code 2022

@@ -4,13 +4,13 @@
 \alias{solve_day17_part1}
 \title{Solution to Day17 Part1 of Advent of Code 2022}
 \usage{
-solve_day17_part1(input)
+solve_day17_part1(jet_pattern)
 }
 \arguments{
-\item{input}{TO DO}
+\item{jet_pattern}{A logical vector representing a jet pattern; TRUE means to the right and FALSE to the left}
 }
 \value{
-TO DO
+The height of the tower of the first 2022 fallen rocks
 }
 \description{
 Solution to Day17 Part1 of Advent of Code 2022

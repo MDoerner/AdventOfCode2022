@@ -156,3 +156,12 @@
 #' 
 #' @source <https://adventofcode.com/2022/day/16>
 "day16_input"
+
+
+#' Input for Day17 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day17_input`
+#' A single string containing in which each character represents the direction of a jet.
+#' 
+#' @source <https://adventofcode.com/2022/day/17>
+"day17_input"
