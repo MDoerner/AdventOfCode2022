@@ -27,7 +27,7 @@ day17 <- modules::module({
   }
 
   
-  shape_height <- function(shape_id = shape_index) {
+  shape_height <- function(shape_id) {
     if (shape_id == 0L) {
       1L
     } else if (shape_id == 1L) {
@@ -46,7 +46,7 @@ day17 <- modules::module({
     }
   }
   
-  shape_width <- function(shape_id = shape_index) {
+  shape_width <- function(shape_id) {
     if (shape_id == 0L) {
       4L
     } else if (shape_id == 1L) {
@@ -346,43 +346,63 @@ day17 <- modules::module({
     as.character(height_after)
   }
   
-  drop_round <- function(start_height, start_jet_index, jet_pattern, occupied_spaces){
-    drop_height <- start_height + 4L
+  drop_single_shape <- function(shape_index, start_height, start_jet_index, jet_pattern, occupied_spaces) {
     jet_index <- start_jet_index
-    for (shape_index in 0:4) {
-      reference_point <- c(3L, drop_height)
-      blocked <- FALSE
-      while (!blocked) {
-        reference_point <- move_horizontally(
-          reference_point = reference_point,
-          move_right = jet_pattern[[jet_index + 1L]],
-          shape_id = shape_index,
-          occupied_spaces = occupied_spaces
-        )
-        jet_index <- (jet_index + 1L) %% length(jet_pattern)
-        
-        down_result <- try_move_down(
-          reference_point = reference_point,
-          shape_id = shape_index,
-          occupied_spaces = occupied_spaces
-        )
-        reference_point <- down_result$reference_point
-        blocked <- down_result$blocked
-      }
-      occupied_spaces <- mark_final_resting_place(
+    reference_point <- c(3L, start_height + 4L)
+    blocked <- FALSE
+    while (!blocked) {
+      reference_point <- move_horizontally(
+        reference_point = reference_point,
+        move_right = jet_pattern[[jet_index + 1L]],
+        shape_id = shape_index,
+        occupied_spaces = occupied_spaces
+      )
+      jet_index <- (jet_index + 1L) %% length(jet_pattern)
+      
+      down_result <- try_move_down(
         reference_point = reference_point,
         shape_id = shape_index,
         occupied_spaces = occupied_spaces
       )
-      drop_height <- max(
-        drop_height,
-        reference_point[[2]] + shape_height(shape_index) + 3L
+      reference_point <- down_result$reference_point
+      blocked <- down_result$blocked
+    }
+    occupied_spaces <- mark_final_resting_place(
+      reference_point = reference_point,
+      shape_id = shape_index,
+      occupied_spaces = occupied_spaces
+    )
+    end_height <- max(
+      start_height,
+      reference_point[[2]] + shape_height(shape_index) - 1L
+    )
+    list(
+      jet_index = jet_index,
+      occupied_spaces = occupied_spaces,
+      height = end_height
+    )
+  }
+  
+  drop_round <- function(start_shape_index, start_height, start_jet_index, jet_pattern, occupied_spaces){
+    height <- start_height
+    jet_index <- start_jet_index
+    for (shape_index_offset in 0:4) {
+      shape_index <- (start_shape_index + shape_index_offset) %% 5L
+      drop_result <- drop_single_shape(
+        shape_index = shape_index, 
+        start_height = height, 
+        start_jet_index = jet_index, 
+        jet_pattern = jet_pattern, 
+        occupied_spaces = occupied_spaces
       )
+      jet_index <- drop_result$jet_index
+      occupied_spaces <- drop_result$occupied_spaces
+      height <- drop_result$height
     }
     list(
       jet_index = jet_index,
       occupied_spaces = occupied_spaces,
-      height = drop_height - 4L
+      height = height
     )
   }
 
@@ -440,7 +460,6 @@ day17 <- modules::module({
     outline
   }
   
-  # n must be a multiple of 5
   drop_shapes_advanced <- function(n, jet_pattern) {
     occupied_spaces <- hashmap$empty_hashmap()
     occupied_spaces <- mark_as_occupied(occupied_spaces, c(1L, 0L))
@@ -450,10 +469,32 @@ day17 <- modules::module({
     occupied_spaces <- mark_as_occupied(occupied_spaces, c(5L, 0L))
     occupied_spaces <- mark_as_occupied(occupied_spaces, c(6L, 0L))
     occupied_spaces <- mark_as_occupied(occupied_spaces, c(7L, 0L))
+    
     jet_index <- 0L
     shape_count <- 0
     height <- 0L
-    outline <- list(c(0L, 0L), c(1L,0L), c(2L,0L), c(3L,0L), c(4L,0L), c(5L,0L), c(6L,0L))
+    
+    # execute until a number of shapes is left divisiable by 
+    # the number of different shapes
+    partial_round_n <- n %% 5L
+    if (partial_round_n > 0L) {
+      for (.dummy in 1:partial_round_n) {
+        drop_result <- drop_single_shape(
+          shape_index = shape_count, 
+          start_height = height, 
+          start_jet_index = jet_index, 
+          jet_pattern = jet_pattern, 
+          occupied_spaces = occupied_spaces
+        )
+        jet_index <- drop_result$jet_index
+        occupied_spaces <- drop_result$occupied_spaces
+        height <- drop_result$height
+        shape_count <- shape_count + 1L
+      }
+    }
+    
+    start_shape_index <- shape_count
+    outline <- get_outline(occupied_spaces, height)
     visited_configurations <- hashmap$empty_hashmap()
     height_by_drops <- hashmap$empty_hashmap()
     while (!has_been_encountered(visited_configurations, jet_index, outline) && shape_count < n) {
@@ -461,6 +502,7 @@ day17 <- modules::module({
       height_by_drops <- save_height(height_by_drops, shape_count, height)
       
       drop_result <- drop_round(
+        start_shape_index = start_shape_index,
         start_height = height, 
         start_jet_index = jet_index, 
         jet_pattern = jet_pattern, 
@@ -499,7 +541,7 @@ day17 <- modules::module({
         point[[2]]
       }
     )
-    y_coords <- rev((min(y_coords_used) - 1L):(max(y_coords_used) + 1L))
+    y_coords <- rev((min(y_coords_used) - 1L):(max(y_coords_used) + 2L))
     coords <- hashmap$empty_hashmap()
     for (point in outline) {
       coords <- hashmap$set(coords, point_encoder$encode_point(point), TRUE)
