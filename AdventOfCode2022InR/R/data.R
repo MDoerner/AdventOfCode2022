@@ -165,3 +165,12 @@
 #' 
 #' @source <https://adventofcode.com/2022/day/17>
 "day17_input"
+
+
+#' Input for Day18 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day18_input`
+#' A single string containing one point in three dimensions on each line
+#' 
+#' @source <https://adventofcode.com/2022/day/18>
+"day18_input"

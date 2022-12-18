@@ -4,13 +4,13 @@
 \alias{solve_day18_part2}
 \title{Solution to Day18 Part2 of Advent of Code 2022}
 \usage{
-solve_day18_part2(input)
+solve_day18_part2(pixels)
 }
 \arguments{
-\item{input}{TO DO}
+\item{pixels}{A list of points in three dimensions}
 }
 \value{
-TO DO
+The number of the pixels' faces accessible from the outside
 }
 \description{
 Solution to Day18 Part2 of Advent of Code 2022

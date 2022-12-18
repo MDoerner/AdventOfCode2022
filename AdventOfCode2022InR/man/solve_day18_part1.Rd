@@ -4,13 +4,13 @@
 \alias{solve_day18_part1}
 \title{Solution to Day18 Part1 of Advent of Code 2022}
 \usage{
-solve_day18_part1(input)
+solve_day18_part1(pixels)
 }
 \arguments{
-\item{input}{TO DO}
+\item{pixels}{A list of points in three dimensions}
 }
 \value{
-TO DO
+The number of the pixels' faces that do not immediately touch another pixel
 }
 \description{
 Solution to Day18 Part1 of Advent of Code 2022

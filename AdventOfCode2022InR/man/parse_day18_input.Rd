@@ -10,7 +10,7 @@ parse_day18_input(input_string)
 \item{input_string}{Input string to day 18 of AdventOfCode}
 }
 \value{
-TO DO
+A list of points in three dimensions representing occupied pixels
 }
 \description{
 Parsed Input to Day18 of Advent Of Code 2022
