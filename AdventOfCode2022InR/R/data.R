@@ -174,3 +174,12 @@
 #' 
 #' @source <https://adventofcode.com/2022/day/18>
 "day18_input"
+
+
+#' Input for Day19 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day19_input`
+#' A single string containing blueprint per line
+#' 
+#' @source <https://adventofcode.com/2022/day/19>
+"day19_input"

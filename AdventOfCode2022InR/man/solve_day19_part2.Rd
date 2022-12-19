@@ -4,13 +4,13 @@
 \alias{solve_day19_part2}
 \title{Solution to Day19 Part2 of Advent of Code 2022}
 \usage{
-solve_day19_part2(input)
+solve_day19_part2(blueprints)
 }
 \arguments{
-\item{input}{TO DO}
+\item{blueprints}{A list of blueprints, each with an id and vectors of the required materials for each robot}
 }
 \value{
-TO DO
+The product of the most geods harvestable within 32 minutes for the first 3 blueprints
 }
 \description{
 Solution to Day19 Part2 of Advent of Code 2022

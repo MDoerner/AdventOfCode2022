@@ -10,7 +10,7 @@ parse_day19_input(input_string)
 \item{input_string}{Input string to day 19 of AdventOfCode}
 }
 \value{
-TO DO
+A list of blueprints, each with an id and vectors of the required materials for each robot
 }
 \description{
 Parsed Input to Day19 of Advent Of Code 2022
