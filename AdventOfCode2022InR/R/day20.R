@@ -4,7 +4,6 @@
 day20 <- modules::module(
   {
     parsing <- modules::use("R/utility/parsing_utils.R")
-    hashmap <- modules::use("R/data_structures/hashmap.R")
     
     modules::export("parse_input")
     parse_input <- function(input_string) {
@@ -13,77 +12,52 @@ day20 <- modules::module(
         purrr::map_int(readr::parse_integer)
     }
     
-    store_index <- function(index_store, original_index, index) {
-      hashmap$set(index_store, as.character(original_index), index)
+    get_original_indices <- function(indices) {
+      match(seq_along(indices), indices)
     }
     
-    get_index <- function(index_store, original_index) {
-      hashmap$get(index_store, as.character(original_index))
-    }
-    
-    move_index <- function(index_stores, values, move_index) {
+    move_index <- function(indices, values, move_index, input_length) {
       move_value <- values[[move_index]]
-      move_from_index <- get_index(index_stores$index_by_original, move_index)
-      move_to_index <- (move_from_index + move_value  - 1L) %% (length(values) - 1L) + 1L
-      if (move_to_index < move_from_index) {
-        for (index in rev(move_to_index:(move_from_index - 1L))) {
-          original_index <- get_index(index_stores$original_by_index, index)
-          new_index <- index + 1L
-          index_stores$index_by_original <- store_index(index_stores$index_by_original, original_index, new_index)
-          index_stores$original_by_index <- store_index(index_stores$original_by_index, new_index, original_index)
-        }
-        index_stores$index_by_original <- store_index(index_stores$index_by_original, move_index, move_to_index)
-        index_stores$original_by_index <- store_index(index_stores$original_by_index, move_to_index, move_index)
-      } else if (move_to_index > move_from_index) {
-        for (index in (move_from_index + 1L):move_to_index) {
-          original_index <- get_index(index_stores$original_by_index, index)
-          new_index <- index - 1L
-          index_stores$index_by_original <- store_index(index_stores$index_by_original, original_index, new_index)
-          index_stores$original_by_index <- store_index(index_stores$original_by_index, new_index, original_index)
-        }
-        index_stores$index_by_original <- store_index(index_stores$index_by_original, move_index, move_to_index)
-        index_stores$original_by_index <- store_index(index_stores$original_by_index, move_to_index, move_index)
+      if (move_value == 0) {
+        return(indices)
       }
-      index_stores
+      move_from_index <- indices[move_index[]]
+      move_to_index <- (move_from_index + move_value  - 1L) %% (input_length - 1L) + 1L
+      if (move_to_index < move_from_index) {
+        item_move <- as.integer(indices < move_from_index & indices >= move_to_index)
+        item_move[[move_index]] <- move_to_index - move_from_index
+        indices <- indices + item_move
+      } else if (move_to_index > move_from_index) {
+        item_move <- -as.integer(indices > move_from_index & indices <= move_to_index)
+        item_move[[move_index]] <- move_to_index - move_from_index
+        indices <- indices + item_move
+      }
+
+      indices
     }
     
-    move_round <- function(index_stores, values) {
+    move_round <- function(indices, values, input_length) {
       purrr::reduce(
         .x = seq_along(values),
         .f = purrr::partial(
           move_index,
-          values = values
+          values = values,
+          input_length = input_length
         ),
-        .init = index_stores
+        .init = indices
       )
     }
     
     move_rounds <- function(sequence, rounds) {
-      index_store <- list(
-        index_by_original = identity_mapping(seq_along(sequence)),
-        original_by_index = identity_mapping(seq_along(sequence))
-      )
+      indices <- seq_along(sequence)
       
       for (dummy in 1:rounds) {
-        index_store <- move_round(index_store, sequence) 
+        indices <- move_round(indices, sequence, length(sequence)) 
       }
       
-      original_by_index <- purrr::map_int(
-        .x = seq_along(sequence),
-        .f = function(index) get_index(index_store$original_by_index, index)
-      )
+      original_by_index <- get_original_indices(indices)
       
       sequence[original_by_index]
-    }
-    
-    identity_mapping <- function(unique_items) {
-      purrr::reduce(
-        .x = unique_items,
-        .f = function(mapping, item) {
-          hashmap$set(mapping, as.character(item), item)
-        },
-        .init = hashmap$empty_hashmap()
-      )  
     } 
     
     modules::export("solve_part1")
