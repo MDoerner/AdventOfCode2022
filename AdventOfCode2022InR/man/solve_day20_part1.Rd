@@ -4,13 +4,13 @@
 \alias{solve_day20_part1}
 \title{Solution to Day20 Part1 of Advent of Code 2022}
 \usage{
-solve_day20_part1(input)
+solve_day20_part1(sequence)
 }
 \arguments{
-\item{input}{TO DO}
+\item{sequence}{An integer vector}
 }
 \value{
-TO DO
+The sum of the 1000th, 2000th and 3000th element after 0 after shifting one round
 }
 \description{
 Solution to Day20 Part1 of Advent of Code 2022

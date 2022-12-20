@@ -7,7 +7,7 @@
 \format{
 \subsection{\code{day19_input}}{
 
-A single string containing blueprint per line
+A single string containing one blueprint per line
 }
 }
 \source{

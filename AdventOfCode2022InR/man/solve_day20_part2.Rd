@@ -4,10 +4,10 @@
 \alias{solve_day20_part2}
 \title{Solution to Day20 Part2 of Advent of Code 2022}
 \usage{
-solve_day20_part2(input)
+solve_day20_part2(sequence)
 }
 \arguments{
-\item{input}{TO DO}
+\item{sequence}{An integer vector}
 }
 \value{
 TO DO

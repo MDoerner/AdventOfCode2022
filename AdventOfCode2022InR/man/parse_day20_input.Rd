@@ -10,7 +10,7 @@ parse_day20_input(input_string)
 \item{input_string}{Input string to day 20 of AdventOfCode}
 }
 \value{
-TO DO
+An integer vector
 }
 \description{
 Parsed Input to Day20 of Advent Of Code 2022
