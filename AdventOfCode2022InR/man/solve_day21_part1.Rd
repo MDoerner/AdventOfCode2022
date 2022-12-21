@@ -4,13 +4,13 @@
 \alias{solve_day21_part1}
 \title{Solution to Day21 Part1 of Advent of Code 2022}
 \usage{
-solve_day21_part1(input)
+solve_day21_part1(monkeys)
 }
 \arguments{
-\item{input}{TO DO}
+\item{monkeys}{Two lists, one for monkeys shouting numbers and one for operation monkeys}
 }
 \value{
-TO DO
+The number the root monkey will shout
 }
 \description{
 Solution to Day21 Part1 of Advent of Code 2022

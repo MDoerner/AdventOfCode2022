@@ -11,7 +11,7 @@ A single string containing one integer per line
 }
 }
 \source{
-\url{https://adventofcode.com/2022/day/19}
+\url{https://adventofcode.com/2022/day/20}
 }
 \usage{
 day20_input

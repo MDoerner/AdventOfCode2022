@@ -190,5 +190,14 @@
 #' @format ## `day20_input`
 #' A single string containing one integer per line
 #' 
-#' @source <https://adventofcode.com/2022/day/19>
+#' @source <https://adventofcode.com/2022/day/20>
 "day20_input"
+
+
+#' Input for Day21 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day21_input`
+#' A single string containing one monkey description per line
+#' 
+#' @source <https://adventofcode.com/2022/day/21>
+"day21_input"
