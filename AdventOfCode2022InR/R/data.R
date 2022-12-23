@@ -201,3 +201,12 @@
 #' 
 #' @source <https://adventofcode.com/2022/day/21>
 "day21_input"
+
+
+#' Input for Day22 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day22_input`
+#' A single string containing a map with empty spaces as '.' and walls as '#' separated from a list of move instructions by an empty line
+#' 
+#' @source <https://adventofcode.com/2022/day/22>
+"day22_input"

@@ -7,10 +7,10 @@
 solve_day22_part2(input)
 }
 \arguments{
-\item{input}{TO DO}
+\item{input}{A list containing the borders of the map, the wall positions, by row and by columns and move instructions}
 }
 \value{
-TO DO
+The final position and orientation after following the moves from the top-left wrapping around the cube encoded as an integer
 }
 \description{
 Solution to Day22 Part2 of Advent of Code 2022

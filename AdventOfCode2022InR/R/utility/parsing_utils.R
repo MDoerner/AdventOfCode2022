@@ -39,7 +39,7 @@ modules::export("split_lines")
 #'
 #' @return A character vector containing each individual character
 split_characters <- function(text){
-  stringr::str_split(text, pattern = "") %>%
+  stringr::str_split(text, pattern = "", ) %>%
     unlist()
 } 
 modules::export("split_characters")
@@ -108,4 +108,16 @@ to_hashmap <- function(text, converter = NULL){
   }
   
   map
+}
+
+modules::export("to_character_matrix")
+#' To Map
+#'
+#' @param text A character vector of length 1
+#'
+#' @return A character matrix whose rows are the characters in each line
+#' @importFrom magrittr %>%
+to_character_matrix <- function(text){
+  lines <- split_lines(text)
+  stringr::str_split(lines, pattern = "", simplify = TRUE)
 }
