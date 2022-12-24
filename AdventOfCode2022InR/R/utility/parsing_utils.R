@@ -81,11 +81,12 @@ modules::export("to_hashmap")
 #' To Map
 #'
 #' @param text A character vector of length 1 whose lines have the same length
-#' @param converter A function converting single letters to values. If NULL, the identity is assumed.
+#' @param converter A function converting single letters to values. If NULL, the identity is assumed
+#' @param ignore_null A boolean determining whether NULL values returned from the converter should be stored
 #'
 #' @return A hash map containing a one value per non-newline character, the key being an encoding of the coordinates given by column and row
 #' @importFrom magrittr %>%
-to_hashmap <- function(text, converter = NULL){
+to_hashmap <- function(text, converter = NULL, ignore_null = FALSE){
   convert <- if (is.null(converter)) { 
     function(x) x 
   } else { 
@@ -102,8 +103,10 @@ to_hashmap <- function(text, converter = NULL){
     line <- line_characters[[y]]
     for (x in seq_along(line)) {
       value <- convert(line[[x]])
-      key <- point_encoder$encode_point(c(x, y))
-      hashmap$set(map, key, value)
+      if (!ignore_null || !is.null(value)) {
+        key <- point_encoder$encode_point(c(x, y))
+        hashmap$set(map, key, value)
+      }
     }
   }
   

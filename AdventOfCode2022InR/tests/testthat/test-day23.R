@@ -1,43 +1,97 @@
 
 
-# test_that("parse_day23_input works: provided test input", {
-#   input <- NULL
-#   actual <- parse_day23_input(input)
-#   expected <- NULL
-#   expect_equal(actual, expected)
-# })
+test_that("parse_day23_input works: provided test input", {
+  input <- "..............
+..............
+.......#......
+.....###.#....
+...#...#.#....
+....#...##....
+...#.###......
+...##.#.##....
+....#..#......
+..............
+..............
+.............."
+  actual <- parse_day23_input(input)
+  actual_map <- for_tests$hashmap$as_list(actual$map)
+  expected_map <- list(
+    "10__4" = TRUE, "10__5" = TRUE, "10__6" = TRUE, "10__8" = TRUE,
+    "4__5" = TRUE, "4__7" = TRUE, "4__8" = TRUE,
+    "5__6" = TRUE, "5__8" = TRUE, "5__9" = TRUE,
+    "6__4" = TRUE, "6__7" = TRUE,
+    "7__4" = TRUE, "7__7" = TRUE, "7__8" = TRUE,
+    "8__3" = TRUE, "8__4" = TRUE, "8__5" = TRUE, "8__7" = TRUE, "8__9" = TRUE,
+    "9__6" = TRUE, "9__8" = TRUE
+  )
+  expected_positions <- list(
+    c(10L, 4L), c(10L, 5L), c(10L, 6L), c(10L, 8L),
+    c(4L, 5L), c(4L, 7L), c(4L, 8L),
+    c(5L, 6L), c(5L, 8L), c(5L, 9L),
+    c(6L, 4L), c(6L, 7L), 
+    c(7L, 4L), c(7L, 7L), c(7L, 8L), 
+    c(8L, 3L), c(8L, 4L), c(8L, 5L), c(8L, 7L), c(8L, 9L), 
+    c(9L, 6L), c(9L, 8L)
+  )
+  expect_equal(actual_map, expected_map)
+  expect_equal(actual$positions, expected_positions)
+})
 
 
-# test_that("solve_day23_part1 works: provided test input", {
-#   input <- NULL
-#   actual <- solve_day23_part1(input)
-#   expected <- ""
-#   expect_equal(actual, expected)
-# })
+test_that("solve_day23_part1 works: provided test input", {
+  input_text <- "..............
+..............
+.......#......
+.....###.#....
+...#...#.#....
+....#...##....
+...#.###......
+...##.#.##....
+....#..#......
+..............
+..............
+.............."
+  input <- parse_day23_input(input_text)
+  actual <- solve_day23_part1(input)
+  expected <- "110"
+  expect_equal(actual, expected)
+})
 
 
-# test_that("solve_day23_part2 works: provided test input", {
-#   input <- NULL
-#   actual <- solve_day23_part2(input)
-#   expected <- ""
-#   expect_equal(actual, expected)
-# })
+test_that("solve_day23_part2 works: provided test input", {
+  input_text <- "..............
+..............
+.......#......
+.....###.#....
+...#...#.#....
+....#...##....
+...#.###......
+...##.#.##....
+....#..#......
+..............
+..............
+.............."
+  input <- parse_day23_input(input_text)
+  actual <- solve_day23_part2(input)
+  expected <- "20"
+  expect_equal(actual, expected)
+})
 
 
 
-
+# TAKES TOO LONG
 # test_that("solve_day23_part1 works: real input", {
 #   input <- parse_day23_input(day23_input)
 #   actual <- solve_day23_part1(input)
-#   expected <- ""
+#   expected <- "3966"
 #   expect_equal(actual, expected)
 # })
 
-
+# TAKES WAY TOO LONG (31 minutes)
 # test_that("solve_day23_part2 works: real input", {
 #   input <- parse_day23_input(day23_input)
 #   actual <- solve_day23_part2(input)
-#   expected <- ""
+#   expected <- "933"
 #   expect_equal(actual, expected)
 # })
 

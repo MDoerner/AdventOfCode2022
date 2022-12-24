@@ -210,3 +210,12 @@
 #' 
 #' @source <https://adventofcode.com/2022/day/22>
 "day22_input"
+
+
+#' Input for Day23 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day23_input`
+#' A single string containing a map with empty spaces as '.' and elves as '#'
+#' 
+#' @source <https://adventofcode.com/2022/day/23>
+"day23_input"
