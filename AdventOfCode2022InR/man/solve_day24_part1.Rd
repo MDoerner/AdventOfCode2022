@@ -4,13 +4,13 @@
 \alias{solve_day24_part1}
 \title{Solution to Day24 Part1 of Advent of Code 2022}
 \usage{
-solve_day24_part1(input)
+solve_day24_part1(blizzard_field)
 }
 \arguments{
-\item{input}{TO DO}
+\item{blizzard_field}{A list consisting of a list the valley's height, its width, the initial blizzard positions and their directions}
 }
 \value{
-TO DO
+The minimum time to traverse the valley dodging all blizzards
 }
 \description{
 Solution to Day24 Part1 of Advent of Code 2022

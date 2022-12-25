@@ -40,6 +40,11 @@ dequeue <- function(queue) {
   )
 }
 
+modules::export("deduplicate")
+deduplicate <- function(queue) {
+  unique(queue)
+}
+
 modules::export("as_vector")
 as_vector <- function(queue) {
   queue

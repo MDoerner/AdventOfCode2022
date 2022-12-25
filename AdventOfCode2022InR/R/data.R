@@ -219,3 +219,12 @@
 #' 
 #' @source <https://adventofcode.com/2022/day/23>
 "day23_input"
+
+
+#' Input for Day24 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day24_input`
+#' A single string containing a map of a valley with blizzards. Empty spaces as are shown as '.', the boundaries as '#' and the blizzards as '<', '>', '^' or 'v' depending on the direction they move in
+#' 
+#' @source <https://adventofcode.com/2022/day/24>
+"day24_input"

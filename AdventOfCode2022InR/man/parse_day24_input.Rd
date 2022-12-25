@@ -10,7 +10,7 @@ parse_day24_input(input_string)
 \item{input_string}{Input string to day 24 of AdventOfCode}
 }
 \value{
-TO DO
+A list consisting of a list the valley's height, its width, the initial blizzard positions and their directions
 }
 \description{
 Parsed Input to Day24 of Advent Of Code 2022
