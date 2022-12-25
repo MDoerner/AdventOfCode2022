@@ -10,7 +10,7 @@ parse_day25_input(input_string)
 \item{input_string}{Input string to day 25 of AdventOfCode}
 }
 \value{
-TO DO
+A list of fuel requirements encoded in SNAFU
 }
 \description{
 Parsed Input to Day25 of Advent Of Code 2022

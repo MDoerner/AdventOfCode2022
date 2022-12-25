@@ -228,3 +228,12 @@
 #' 
 #' @source <https://adventofcode.com/2022/day/24>
 "day24_input"
+
+
+#' Input for Day25 of Advent of Code 2022 for Max Doerner
+#'
+#' @format ## `day25_input`
+#' A single string containing a list of fuel requirements encoded in SNAFU, each on its own line
+#' 
+#' @source <https://adventofcode.com/2022/day/25>
+"day25_input"

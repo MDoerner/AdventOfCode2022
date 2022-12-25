@@ -4,13 +4,13 @@
 \alias{solve_day25_part1}
 \title{Solution to Day25 Part1 of Advent of Code 2022}
 \usage{
-solve_day25_part1(input)
+solve_day25_part1(fuel_requirements)
 }
 \arguments{
-\item{input}{TO DO}
+\item{fuel_requirements}{A list of fuel fuel_requirements encoded in SNAFU}
 }
 \value{
-TO DO
+The total fuel required encoded in SNAFU
 }
 \description{
 Solution to Day25 Part1 of Advent of Code 2022
