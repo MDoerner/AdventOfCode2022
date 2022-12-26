@@ -38,7 +38,7 @@ test_that("parse_day22_input works: provided test input", {
         8L,
         c(1L, 5L, 9L),
         NA_integer_,
-        10L, 
+        10L,
         12L,
         NA_integer_
       ),
@@ -88,42 +88,42 @@ test_that("solve_day22_part1 works: provided test input", {
 })
 
 
-# test_that("solve_day22_part2 works: provided test input", {
-#   input_text <- "        ...#
-#         .#..
-#         #...
-#         ....
-# ...#.......#
-# ........#...
-# ..#....#....
-# ..........#.
-#         ...#....
-#         .....#..
-#         .#......
-#         ......#.
-# 
-# 10R5L5R10L4R5L5"
-#   input <- parse_day22_input(input_text)
-#   actual <- solve_day22_part2(input)
-#   expected <- "5031"
-#   expect_equal(actual, expected)
-# })
+test_that("solve_day22_part2 works: provided test input", {
+  input_text <- "        ...#
+        .#..
+        #...
+        ....
+...#.......#
+........#...
+..#....#....
+..........#.
+        ...#....
+        .....#..
+        .#......
+        ......#.
+
+10R5L5R10L4R5L5"
+  input <- parse_day22_input(input_text)
+  actual <- solve_day22_part2(input)
+  expected <- "5031"
+  expect_equal(actual, expected)
+})
 
 
 
 
-# test_that("solve_day22_part1 works: real input", {
-#   input <- parse_day22_input(day22_input)
-#   actual <- solve_day22_part1(input)
-#   expected <- "1484"
-#   expect_equal(actual, expected)
-# })
+test_that("solve_day22_part1 works: real input", {
+  input <- parse_day22_input(day22_input)
+  actual <- solve_day22_part1(input)
+  expected <- "1484"
+  expect_equal(actual, expected)
+})
 
 
 test_that("solve_day22_part2 works: real input", {
   input <- parse_day22_input(day22_input)
   actual <- solve_day22_part2(input)
-  expected <- ""
+  expected <- "142228"
   expect_equal(actual, expected)
 })
 

@@ -129,143 +129,6 @@ day22 <- modules::module(
       NA
     }
     
-    move_in_coord_direction <- function(position, distance, min_border, max_border, walls) {
-      if (length(walls) == 1L && is.na(walls)) {
-        # There are no walls on the row/column,
-        new_position <- min_border + (position - min_border + distance) %% (max_border - min_border + 1L)
-        return(new_position)
-      }
-      # There is a wall on this row/column.
-      
-      next_wall <- find_next_wall(position, walls)
-      if (!is.na(next_wall)) {
-        # There is wall a before we have to wrap around.
-        new_position <- min(position + distance, next_wall - 1L)
-        return(new_position)
-      }
-      # There is no wall before wrapping around.
-      
-      if (position + distance <= max_border) {
-        # We do not wrap around because we do not move that far.
-        return(position + distance)
-      }
-      # We have to move so far that we wrap around.
-      
-      if (walls[[1]] == min_border) {
-        # We have to stop at the end, because a wall blocks wrapping around.
-        return(max_border)
-      }
-      # We actually wrap around.
-      
-      remaining_distance <- position + distance - max_border - 1L
-      first_wall <- walls[[1]]
-      new_position <- min(min_border + remaining_distance, first_wall - 1L)
-      new_position
-    }
-    
-    move_against_coord_direction <- function(position, distance, min_border, max_border, walls) {
-      if (length(walls) == 1L && is.na(walls)) {
-        # There are no walls on the row/column.
-        new_position <- max_border - (max_border - position + distance) %% (max_border - min_border + 1L)
-        return(new_position)
-      }
-      # There is a wall on this row/column.
-      
-      previous_wall <- find_previous_wall(position, walls)
-      if (!is.na(previous_wall)) {
-        # There is a wall before we have to wrap around.
-        new_position <- max(position - distance, previous_wall + 1L)
-        return(new_position)
-      }
-      # There is no wall before wrapping around.
-      
-      if (position - distance >= min_border) {
-        # We do not wrap around because we do not move that far.
-        return(position - distance)
-      }
-      # We have to move so far, that we wrap around.
-      
-      if (walls[[length(walls)]] == max_border) {
-        # We have to stop at the end, because a wall blocks wrapping around.
-        return(min_border)
-      }
-      # We actually wrap around.
-      
-      remaining_distance <- min_border - position + distance - 1L
-      last_wall <- walls[[length(walls)]]
-      new_position <- max(max_border - remaining_distance, last_wall + 1L)
-      new_position
-    }
-    
-    move_right <- function(position, distance, left_border, right_border, walls) {
-      y <- position[[2]]
-      new_x <- move_in_coord_direction(position[[1]], distance, left_border, right_border, walls)
-      c(new_x, y)
-    }
-    
-    move_left <- function(position, distance, left_border, right_border, walls) {
-      y <- position[[2]]
-      new_x <- move_against_coord_direction(position[[1]], distance, left_border, right_border, walls)
-      c(new_x, y)
-    }
-    
-    move_up <- function(position, distance, top_border, bottom_border, walls) {
-      x <- position[[1]]
-      new_y <- move_against_coord_direction(position[[2]], distance, top_border, bottom_border, walls)
-      c(x, new_y)
-    }
-    
-    move_down <- function(position, distance, top_border, bottom_border, walls) {
-      x <- position[[1]]
-      new_y <- move_in_coord_direction(position[[2]], distance, top_border, bottom_border, walls)
-      c(x, new_y)
-    }
-    
-    move_forward <- function(position, orientation, distance, borders, walls) {
-      if (orientation[[1]] > 0L) {
-        y <- position[[2]]
-        move_right(
-          position = position, 
-          distance = distance, 
-          left_border = borders$left[[y]],
-          right_border = borders$right[[y]],
-          walls = walls$by_row[[y]]
-        )
-      } else if (orientation[[1]] < 0L) {
-        y <- position[[2]]
-        move_left(
-          position = position, 
-          distance = distance, 
-          left_border = borders$left[[y]],
-          right_border = borders$right[[y]],
-          walls = walls$by_row[[y]]
-        )
-      } else if (orientation[[2]] > 0L) {
-        x <- position[[1]]
-        move_down(
-          position = position, 
-          distance = distance, 
-          top_border = borders$top[[x]],
-          bottom_border = borders$bottom[[x]],
-          walls = walls$by_column[[x]]
-        )
-      } else if (orientation[[2]] < 0L) {
-        x <- position[[1]]
-        move_up(
-          position = position, 
-          distance = distance, 
-          top_border = borders$top[[x]],
-          bottom_border = borders$bottom[[x]],
-          walls = walls$by_column[[x]]
-        )
-      } else {
-        cli::cli_abort(c(
-          "The known orientations are (1,0), (0,1), (-1,0) and (0, -1).",
-          "x" = "Orientation {orientation} not recognized."
-        ))
-      } 
-    }
-    
     rotate_orientation <- function(orientation, rotation_direction) {
       if (rotation_direction == "L") {
         c(orientation[[2]], -orientation[[1]])
@@ -279,21 +142,6 @@ day22 <- modules::module(
           "x" = "Rotation direction {orientation} not recognized."
         ))
       }
-    }
-    
-    apply_moves <- function(start_point, start_orientation, borders, walls, moves) {
-      orientation <- start_orientation
-      position <- start_point
-      for (move_index in seq_along(moves$distances)) {
-        position <- move_forward(position, orientation, moves$distances[[move_index]], borders, walls)
-        if (move_index <= length(moves$rotations)) {
-          orientation <- rotate_orientation(orientation, moves$rotations[[move_index]])
-        }
-      }
-      list(
-        position = position,
-        orientation = orientation
-      )
     }
     
     facing_value <- function(orientation) {
@@ -317,17 +165,52 @@ day22 <- modules::module(
       1000 * point[[2]] + 4 * point[[1]] + facing_value(orientation) 
     }
     
+    perform_loop_transition <- function(position, orientation, borders) {
+      x <- position[[1]]
+      y <- position[[2]]
+      if (orientation[[1]] > 0) {
+        list(
+          position = c(borders$left[[y]], y),
+          orientation = orientation
+        )
+      } else if (orientation[[1]] < 0L) {
+        list(
+          position = c(borders$right[[y]], y),
+          orientation = orientation
+        )
+      } else if (orientation[[2]] > 0L) {
+        list(
+          position = c(x, borders$top[[x]]),
+          orientation = orientation
+        )
+      } else if (orientation[[2]] < 0L) {
+        list(
+          position = c(x, borders$bottom[[x]]),
+          orientation = orientation
+        )
+      } else {
+        cli::cli_abort(c(
+          "The known orientations are (1,0), (0,1), (-1,0) and (0, -1).",
+          "x" = "Orientation {orientation} not recognized."
+        ))
+      }
+    }
+    
     modules::export("solve_part1")
     solve_part1 <- function(input) {
       start_point <- c(input$borders$left[[1]], 1L)
       start_orientation <- c(1L, 0L)
-      final_position <- apply_moves(start_point, start_orientation, input$borders, input$walls, input$moves)
+      transition_function <- purrr::partial(
+        perform_loop_transition,
+        borders = input$borders
+      )
+      final_position <- apply_moves(start_point, start_orientation, input$borders, input$walls, transition_function, input$moves)
       result <- encode_position(final_position$position, final_position$orientation)
       as.character(result)
     }
     
     
-    move_in_coord_direction_on_cube <- function(position, distance, min_border, max_border, walls) {
+    move_in_coord_direction <- function(position, distance, min_border, max_border, walls) {
       next_wall <- find_next_wall(position, walls)
       if (!is.na(next_wall)) {
         # There is a wall before we have to wrap around.
@@ -348,14 +231,14 @@ day22 <- modules::module(
       }
       # We have to move so far that we wrap around.
       
-      remaining_distance <- position + distance - max_border - 1L
+      remaining_distance <- position + distance - max_border
       list(
         position = max_border,
         remaining_distance = remaining_distance
       )
     }
     
-    move_against_coord_direction_on_cube <- function(position, distance, min_border, max_border, walls) {
+    move_against_coord_direction <- function(position, distance, min_border, max_border, walls) {
       previous_wall <- find_previous_wall(position, walls)
       if (!is.na(previous_wall)) {
         # There is a wall before we have to wrap around.
@@ -376,43 +259,43 @@ day22 <- modules::module(
       }
       # We have to move so far, that we wrap around.
       
-      remaining_distance <- min_border - position + distance - 1L
+      remaining_distance <- min_border - position + distance
       list(
         position = min_border,
         remaining_distance = remaining_distance
       )
     }
     
-    move_right_on_cube <- function(position, distance, borders, walls) {
+    move_right <- function(position, distance, borders, walls) {
       y <- position[[2]]
-      move_result <- move_in_coord_direction_on_cube(position[[1]], distance, borders$left[[y]], borders$right[[y]], walls$by_row[[y]])
+      move_result <- move_in_coord_direction(position[[1]], distance, borders$left[[y]], borders$right[[y]], walls$by_row[[y]])
       list(
         position = c(move_result$position, y),
         remaining_distance = move_result$remaining_distance
       )
     }
     
-    move_left_on_cube <- function(position, distance, borders, walls) {
+    move_left <- function(position, distance, borders, walls) {
       y <- position[[2]]
-      move_result <- move_against_coord_direction_on_cube(position[[1]], distance, borders$left[[y]], borders$right[[y]], walls$by_row[[y]])
+      move_result <- move_against_coord_direction(position[[1]], distance, borders$left[[y]], borders$right[[y]], walls$by_row[[y]])
       list(
         position = c(move_result$position, y),
         remaining_distance = move_result$remaining_distance
       )
     }
     
-    move_up_on_cube <- function(position, distance, borders, walls) {
+    move_up <- function(position, distance, borders, walls) {
       x <- position[[1]]
-      move_result <- move_against_coord_direction_on_cube(position[[2]], distance, borders$top[[x]], borders$bottom[[x]], walls$by_column[[x]])
+      move_result <- move_against_coord_direction(position[[2]], distance, borders$top[[x]], borders$bottom[[x]], walls$by_column[[x]])
       list(
         position = c(x, move_result$position),
         remaining_distance = move_result$remaining_distance
       )
     }
     
-    move_down_on_cube <- function(position, distance, borders, walls) {
+    move_down <- function(position, distance, borders, walls) {
       x <- position[[1]]
-      move_result <- move_in_coord_direction_on_cube(position[[2]], distance, borders$top[[x]], borders$bottom[[x]], walls$by_column[[x]])
+      move_result <- move_in_coord_direction(position[[2]], distance, borders$top[[x]], borders$bottom[[x]], walls$by_column[[x]])
       list(
         position = c(x, move_result$position),
         remaining_distance = move_result$remaining_distance
@@ -752,22 +635,15 @@ day22 <- modules::module(
       }
     }
     
-    move_forward_on_cube <- function(position, orientation, distance, borders, walls, cube_config, width) {
-      # encode_point <- function(point) paste0("(", point[[1]], ", ", point[[2]], ")")
-      # print(paste0(
-      #   "Moving from ", encode_point(position),
-      #   " a distance of ", distance,
-      #   " in direction " , encode_point(orientation)
-      # ))
-      
+    move_forward <- function(position, orientation, distance, borders, walls, transition_function) {
       move_result <- if (orientation[[1]] > 0L) {
-        move_right_on_cube(position, distance, borders, walls)
+        move_right(position, distance, borders, walls)
       } else if (orientation[[1]] < 0L) {
-        move_left_on_cube(position, distance, borders, walls)
+        move_left(position, distance, borders, walls)
       } else if (orientation[[2]] > 0L) {
-        move_down_on_cube(position, distance, borders, walls)
+        move_down(position, distance, borders, walls)
       } else if (orientation[[2]] < 0L) {
-        move_up_on_cube(position, distance, borders, walls)
+        move_up(position, distance, borders, walls)
       } else {
         cli::cli_abort(c(
           "The known orientations are (1,0), (0,1), (-1,0) and (0, -1).",
@@ -775,64 +651,41 @@ day22 <- modules::module(
         ))
       } 
       if (move_result$remaining_distance == 0L) {
-        # print(paste0(
-        #   "Stopping at ", encode_point(move_result$position),
-        #   " facing in direction " , encode_point(orientation)
-        # ))
         return(list(
           position = move_result$position,
           orientation = orientation
         ))
       }
-      transition_result <- perform_cube_transition(move_result$position, orientation, cube_config, width)
-      
-      encode_point <- function(point) paste0("(", point[[1]], ", ", point[[2]], ")")
-      print(paste0(
-        "Transition: from ", encode_point(move_result$position), 
-        " > ",  encode_point(orientation), 
-        " to ", encode_point(transition_result$position), 
-        " > ", encode_point(transition_result$orientation),
-        " with remaining distance ", move_result$remaining_distance
-      ))
-      # browser()
+      transition_result <- transition_function(move_result$position, orientation)
+      remaining_distance <- move_result$remaining_distance - 1L
       
       if (transition_result$position[[2]] %in% walls$by_column[[transition_result$position[[1]]]]) {
-        print(paste0(
-          "Failing to transition because of a wall at ", encode_point(transition_result$position),
-          ". Thus stopping at", encode_point(move_result$position),
-          " facing in direction " , encode_point(orientation)
-        ))
         list(
           position = move_result$position,
           orientation = orientation
         )
       } else {
-        move_forward_on_cube(
+        move_forward(
           position = transition_result$position,
           orientation = transition_result$orientation,
-          distance = move_result$remaining_distance,
+          distance = remaining_distance,
           borders = borders,
           walls = walls,
-          cube_config = cube_config,
-          width = width
+          transition_function = transition_function
         )
       }
     }
     
-    apply_moves_on_cube <- function(start_point, start_orientation, borders, walls, cube_config, moves, width) {
+    apply_moves <- function(start_point, start_orientation, borders, walls, transition_function, moves) {
       orientation <- start_orientation
       position <- start_point
-      print(start_point)
-      print(start_orientation)
       for (move_index in seq_along(moves$distances)) {
-        move_result <- move_forward_on_cube(position, orientation, moves$distances[[move_index]], borders, walls, cube_config, width)
+        move_result <- move_forward(position, orientation, moves$distances[[move_index]], borders, walls, transition_function)
         position <- move_result$position
         orientation <- move_result$orientation
         if (move_index <= length(moves$rotations)) {
           orientation <- rotate_orientation(orientation, moves$rotations[[move_index]])
         }
-        print(move_result$position)
-        # browser()
       }
       list(
         position = position,
@@ -877,7 +730,12 @@ day22 <- modules::module(
         map_height = length(input$borders$left)
       )
       cube_config <- cube_configuration(input$borders, width)
-      final_position <- apply_moves_on_cube(start_point, start_orientation, input$borders, input$walls, cube_config, input$moves, width)
+      transition_function <- purrr::partial(
+        perform_cube_transition,
+        cube_config = cube_config,
+        width = width
+      ) 
+      final_position <- apply_moves(start_point, start_orientation, input$borders, input$walls, transition_function, input$moves)
       result <- encode_position(final_position$position, final_position$orientation)
       as.character(result)
     }
